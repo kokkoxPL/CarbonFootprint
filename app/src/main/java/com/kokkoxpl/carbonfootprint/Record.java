@@ -28,4 +28,8 @@ public class Record {
     public String getDate() {
         return date;
     }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }

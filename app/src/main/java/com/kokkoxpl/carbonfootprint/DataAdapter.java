@@ -13,23 +13,27 @@ import java.util.List;
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataViewHolder> {
     private final List<Data> list;
-    private List<Record> records;
+    private final List<Record> records;
+    private final recordChanged listener;
 
-    public DataAdapter(List<Data> list, List<Record> records) {
+    public interface recordChanged {
+        void changeRecord(Record item);
+    }
+
+    public DataAdapter(List<Data> list, List<Record> records, recordChanged listener) {
         this.list = list;
         this.records = records;
+        this.listener = listener;
     }
 
     @Override
     public DataViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.data_card, viewGroup, false);
-
-        return new DataViewHolder(view);
+        return new DataViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.data_card, viewGroup, false));
     }
 
     @Override
     public void onBindViewHolder(DataViewHolder viewHolder, final int position) {
-        viewHolder.bind(list.get(position), records.get(position));
+        viewHolder.bind(list.get(position), records.get(position), listener);
     }
 
     @Override
@@ -51,17 +55,26 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataViewHolder
             plusButton = view.findViewById(R.id.plusButton);
         }
 
-        public void bind(final Data item, Record record) {
+        public void bind(final Data item, Record record, final recordChanged listener) {
             nameTextView.setText(String.format("%s(%s)", item.getName(), item.getCost()));
             quantityTextView.setText(String.valueOf(record.getQuantity()));
 
+
             plusButton.setOnClickListener(v -> {
-                quantityTextView.setText(String.valueOf(Integer.valueOf(quantityTextView.getText().toString()) + 1));
+                int newValue = Integer.parseInt(quantityTextView.getText().toString()) + 1;
+                record.setQuantity(newValue);
+
+                quantityTextView.setText(String.valueOf(newValue));
+                listener.changeRecord(record);
             });
 
             minusButton.setOnClickListener(v -> {
-                if(Integer.valueOf(quantityTextView.getText().toString()) > 0) {
-                    quantityTextView.setText(String.valueOf(Integer.valueOf(quantityTextView.getText().toString()) - 1));
+                if(Integer.parseInt(quantityTextView.getText().toString()) > 0) {
+                    int newValue = Integer.parseInt(quantityTextView.getText().toString()) - 1;
+                    record.setQuantity(newValue);
+
+                    quantityTextView.setText(String.valueOf(newValue));
+                    listener.changeRecord(record);
                 }
             });
         }

@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -59,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Data> getData()
     {
         String[] columns = new String[] { ID, DATA_NAME, DATA_COST };
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         List<Data> data = new ArrayList<>();
         Cursor cursor = db.query(DATA_TABLE, columns, null, null, null, null, null);
 
@@ -80,15 +82,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Record> getRecords(String date)
     {
         String[] columns = new String[] { ID, RECORDS_ID_OF_DATA, RECORDS_QUANTITY, RECORDS_DATE };
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         List<Record> records = new ArrayList<>();
         Cursor cursor = db.query(RECORDS_TABLE, columns, String.format("%s = ?", RECORDS_DATE), new String[]{date}, null, null, null);
 
         if(cursor.getCount() == 0) {
-            insertRecord(0, 0, date);
-            insertRecord(1, 0, date);
+            insertRecords(date);
+            db = this.getReadableDatabase();
             cursor = db.query(RECORDS_TABLE, columns, String.format("%s = ?", RECORDS_DATE), new String[]{date}, null, null, null);
-
         }
 
         if (cursor.moveToFirst()) {
@@ -107,15 +108,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return records;
     }
 
-    public long insertRecord(int dataID, int quantity, String date) {
+    public void insertRecords(String date) {
+        List<Data> data = getData();
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(RECORDS_ID_OF_DATA, dataID);
-        contentValues.put(RECORDS_QUANTITY, quantity);
-        contentValues.put(RECORDS_DATE, date);
-
-        return db.insert(RECORDS_TABLE, null, contentValues);
+        db.beginTransaction();
+        try {
+            for (Data value : data) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(RECORDS_ID_OF_DATA, value.getID());
+                contentValues.put(RECORDS_QUANTITY, 0);
+                contentValues.put(RECORDS_DATE, date);
+                db.insert(RECORDS_TABLE, null, contentValues);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
     }
 
     public int updateRecord(long id, int dataID, int quantity, String date) {
@@ -126,7 +134,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(RECORDS_QUANTITY, quantity);
         contentValues.put(RECORDS_DATE, date);
 
-        return db.update(RECORDS_TABLE, contentValues, ID + " = " + id, null);
+        return db.update(RECORDS_TABLE, contentValues, String.format("%s = %s", ID, id), null);
+    }
+
+    public void updateRecords(List<Record> records, String date) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            for (Record value : records) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(RECORDS_ID_OF_DATA, value.getIdOfData());
+                contentValues.put(RECORDS_QUANTITY, value.getQuantity());
+                contentValues.put(RECORDS_DATE, date);
+                db.update(RECORDS_TABLE, contentValues, String.format("%s = %s", ID, value.getId()), null);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
     }
 
     public long deleteRecord(long id) {

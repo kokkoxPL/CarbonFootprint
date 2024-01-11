@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private Button save;
     private RecyclerView recyclerView;
 
+    private String currentDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,35 +42,41 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.dataView);
 
         Bundle bundle = getIntent().getExtras();
-        LocalDate localDate;
 
         if(bundle != null && bundle.containsKey("DATE")) {
-            localDate = LocalDate.parse(bundle.getString("DATE"));
+            currentDate = LocalDate.parse(bundle.getString("DATE")).toString();
         } else {
-            localDate = LocalDate.now();
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            dtf.format(localDate);
+            currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now());
         }
-        dateTextView.setText(localDate.toString());
+
+        dateTextView.setText(currentDate);
 
         databaseHelper = new DatabaseHelper(this);
         List<Data> data = databaseHelper.getData();
-        List<Record> records = databaseHelper.getRecords(localDate.toString());
+        List<Record> records = databaseHelper.getRecords(currentDate);
 
-        dataAdapter = new DataAdapter(data, records);
+
+        dataAdapter = new DataAdapter(data, records, v -> {
+            for (Record record : records) {
+                if (record.getId() == v.getId()) {
+                    record.setQuantity(v.getQuantity());
+                }
+            }
+        });
         recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         save.setOnClickListener(v -> {
-            for(int i = 0; i < dataAdapter.getItemCount(); i++)
-            {
-                View view = recyclerView.getChildAt(i);
-                if(view!=null)
-                {
-                    int quantity = Integer.valueOf(((TextView) view.findViewById(R.id.dataQuantity)).getText().toString());
-                    databaseHelper.updateRecord(records.get(i).getId(), records.get(i).getIdOfData(), quantity, localDate.toString());
-                }
-            }
+            databaseHelper.updateRecords(records, currentDate);
+//            for(int i = 0; i < dataAdapter.getItemCount(); i++)
+//            {
+//                View view = recyclerView.getChildAt(i);
+//                if(view!=null)
+//                {
+//                    int quantity = Integer.parseInt(((TextView) view.findViewById(R.id.dataQuantity)).getText().toString());
+//                    databaseHelper.updateRecord(records.get(i).getId(), records.get(i).getIdOfData(), quantity, currentDate);
+//                }
+//            }
         });
 
         prev.setOnClickListener(v -> {
