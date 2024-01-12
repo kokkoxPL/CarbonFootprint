@@ -1,9 +1,9 @@
 package com.kokkoxpl.carbonfootprint;
 
 public class Data {
-    private int id;
-    private String name;
-    private float cost;
+    private final int id;
+    private final float cost;
+    private final String name;
 
     public Data(int id, String name, float cost) {
         this.id = id;

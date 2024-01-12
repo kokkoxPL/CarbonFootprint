@@ -1,10 +1,10 @@
 package com.kokkoxpl.carbonfootprint;
 
 public class Record {
-    private int id;
-    private int idOfData;
+    private final int id;
+    private final int idOfData;
     private int quantity;
-    private String date;
+    private final String date;
 
     public Record(int id, int idOfData, int quantity, String date) {
         this.id = id;

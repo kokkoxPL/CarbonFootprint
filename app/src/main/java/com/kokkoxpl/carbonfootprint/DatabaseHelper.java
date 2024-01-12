@@ -86,6 +86,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<Record> records = new ArrayList<>();
         Cursor cursor = db.query(RECORDS_TABLE, columns, String.format("%s = ?", RECORDS_DATE), new String[]{date}, null, null, null);
 
+        // Do if no records
         if(cursor.getCount() == 0) {
             insertRecords(date);
             db = this.getReadableDatabase();
@@ -103,7 +104,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
-        records.sort(Comparator.comparing(Record::getId));
 
         return records;
     }
@@ -113,44 +113,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         try {
+            ContentValues contentValues = new ContentValues();
+
+            // Default values
+            contentValues.put(RECORDS_QUANTITY, 0);
+            contentValues.put(RECORDS_DATE, date);
+
             for (Data value : data) {
-                ContentValues contentValues = new ContentValues();
                 contentValues.put(RECORDS_ID_OF_DATA, value.getID());
-                contentValues.put(RECORDS_QUANTITY, 0);
-                contentValues.put(RECORDS_DATE, date);
                 db.insert(RECORDS_TABLE, null, contentValues);
             }
+
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
+            db.close();
         }
-    }
-
-    public int updateRecord(long id, int dataID, int quantity, String date) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(RECORDS_ID_OF_DATA, dataID);
-        contentValues.put(RECORDS_QUANTITY, quantity);
-        contentValues.put(RECORDS_DATE, date);
-
-        return db.update(RECORDS_TABLE, contentValues, String.format("%s = %s", ID, id), null);
     }
 
     public void updateRecords(List<Record> records, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         try {
+            ContentValues contentValues = new ContentValues();
+
             for (Record value : records) {
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(RECORDS_ID_OF_DATA, value.getIdOfData());
                 contentValues.put(RECORDS_QUANTITY, value.getQuantity());
-                contentValues.put(RECORDS_DATE, date);
                 db.update(RECORDS_TABLE, contentValues, String.format("%s = %s", ID, value.getId()), null);
             }
+
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
+            db.close();
         }
     }
 

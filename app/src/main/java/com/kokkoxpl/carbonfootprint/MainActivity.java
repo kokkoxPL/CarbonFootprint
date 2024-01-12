@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "CF";
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
 
         if(bundle != null && bundle.containsKey("DATE")) {
-            currentDate = LocalDate.parse(bundle.getString("DATE")).toString();
+            currentDate = bundle.getString("DATE");
         } else {
             currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now());
         }
@@ -55,28 +57,12 @@ public class MainActivity extends AppCompatActivity {
         List<Data> data = databaseHelper.getData();
         List<Record> records = databaseHelper.getRecords(currentDate);
 
-
-        dataAdapter = new DataAdapter(data, records, v -> {
-            for (Record record : records) {
-                if (record.getId() == v.getId()) {
-                    record.setQuantity(v.getQuantity());
-                }
-            }
-        });
+        dataAdapter = new DataAdapter(data, records);
         recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         save.setOnClickListener(v -> {
             databaseHelper.updateRecords(records, currentDate);
-//            for(int i = 0; i < dataAdapter.getItemCount(); i++)
-//            {
-//                View view = recyclerView.getChildAt(i);
-//                if(view!=null)
-//                {
-//                    int quantity = Integer.parseInt(((TextView) view.findViewById(R.id.dataQuantity)).getText().toString());
-//                    databaseHelper.updateRecord(records.get(i).getId(), records.get(i).getIdOfData(), quantity, currentDate);
-//                }
-//            }
         });
 
         prev.setOnClickListener(v -> {
