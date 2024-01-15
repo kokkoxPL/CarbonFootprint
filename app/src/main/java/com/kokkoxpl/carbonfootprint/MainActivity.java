@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
 
     private String currentDate;
+    List<Data> data;
+    List<Record> records;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
         dateTextView.setText(currentDate);
 
         databaseHelper = new DatabaseHelper(this);
-        List<Data> data = databaseHelper.getData();
-        List<Record> records = databaseHelper.getRecords(currentDate);
+        data = databaseHelper.getData();
+        records = databaseHelper.getRecords(currentDate);
 
         dataAdapter = new DataAdapter(data, records);
         recyclerView.setAdapter(dataAdapter);

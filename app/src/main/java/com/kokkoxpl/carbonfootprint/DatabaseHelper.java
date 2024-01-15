@@ -10,7 +10,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Information
@@ -63,7 +65,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String[] columns = new String[] { ID, DATA_NAME, DATA_COST };
         SQLiteDatabase db = this.getReadableDatabase();
         List<Data> data = new ArrayList<>();
-        Cursor cursor = db.query(DATA_TABLE, columns, null, null, null, null, null);
+        Cursor cursor = db.query(DATA_TABLE, columns,
+                null, null, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -84,13 +87,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String[] columns = new String[] { ID, RECORDS_ID_OF_DATA, RECORDS_QUANTITY, RECORDS_DATE };
         SQLiteDatabase db = this.getReadableDatabase();
         List<Record> records = new ArrayList<>();
-        Cursor cursor = db.query(RECORDS_TABLE, columns, String.format("%s = ?", RECORDS_DATE), new String[]{date}, null, null, null);
+        Cursor cursor = db.query(RECORDS_TABLE, columns, String.format("%s = ?", RECORDS_DATE),
+                new String[]{date}, null, null, null);
 
         // Do if no records
         if(cursor.getCount() == 0) {
             insertRecords(date);
             db = this.getReadableDatabase();
-            cursor = db.query(RECORDS_TABLE, columns, String.format("%s = ?", RECORDS_DATE), new String[]{date}, null, null, null);
+            cursor = db.query(RECORDS_TABLE, columns, String.format("%s = ?", RECORDS_DATE),
+                    new String[]{date}, null, null, null);
         }
 
         if (cursor.moveToFirst()) {
@@ -108,9 +113,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return records;
     }
 
+//    public Map<String, Record> getRecordMap(String date) {
+//        String[] dataColumns = new String[] { DATA_NAME };
+//        String[] recordColumns = new String[] { ID, RECORDS_ID_OF_DATA, RECORDS_QUANTITY, RECORDS_DATE };
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Map<String, Record> recordMap = new HashMap<>();
+//
+//
+//        Cursor dataCursor = db.query(DATA_TABLE, dataColumns,
+//                null, null, null, null, null);
+//
+//        Cursor recordCursor = db.query(RECORDS_TABLE, recordColumns, String.format("%s = ?", RECORDS_DATE),
+//                new String[]{date}, null, null, null);
+//
+//
+//        recordCursor.moveToFirst();
+//        if (dataCursor.moveToFirst()) {
+//            do {
+//                recordMap.put(dataCursor.getString(0), new Record(
+//                        recordCursor.getInt(0),
+//                        recordCursor.getInt(1),
+//                        recordCursor.getInt(2),
+//                        recordCursor.getString(3)));
+//                recordCursor.moveToNext();
+//            } while (dataCursor.moveToNext());
+//        }
+//        dataCursor.close();
+//        recordCursor.close();
+//        db.close();
+//
+//        return recordMap;
+//    }
+
     public void insertRecords(String date) {
         List<Data> data = getData();
         SQLiteDatabase db = this.getWritableDatabase();
+
         db.beginTransaction();
         try {
             ContentValues contentValues = new ContentValues();
@@ -133,13 +171,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void updateRecords(List<Record> records, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
+
         db.beginTransaction();
         try {
             ContentValues contentValues = new ContentValues();
 
             for (Record value : records) {
                 contentValues.put(RECORDS_QUANTITY, value.getQuantity());
-                db.update(RECORDS_TABLE, contentValues, String.format("%s = %s", ID, value.getId()), null);
+                db.update(RECORDS_TABLE, contentValues,
+                        String.format("%s = %s", ID, value.getId()), null);
             }
 
             db.setTransactionSuccessful();
@@ -147,10 +187,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.endTransaction();
             db.close();
         }
-    }
-
-    public long deleteRecord(long id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(RECORDS_TABLE, ID + "=" + id, null);
     }
 }
