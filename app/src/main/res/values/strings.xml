@@ -1,10 +1,12 @@
 <resources>
     <string name="app_name">CarbonFootprint</string>
-    <string name="title_activity_menu">Menu</string>
     <string name="title_home">Home</string>
+    <string name="title_settings">Settings</string>
 
-    <string name="save_record">zapisz</string>
+    <string name="save_record">Save</string>
 
     <string name="minus_button_desc">minus</string>
     <string name="plus_button_desc">plus</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
