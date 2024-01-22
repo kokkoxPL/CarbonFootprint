@@ -5,14 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Information
@@ -113,38 +108,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return records;
     }
 
-//    public Map<String, Record> getRecordMap(String date) {
-//        String[] dataColumns = new String[] { DATA_NAME };
-//        String[] recordColumns = new String[] { ID, RECORDS_ID_OF_DATA, RECORDS_QUANTITY, RECORDS_DATE };
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Map<String, Record> recordMap = new HashMap<>();
-//
-//
-//        Cursor dataCursor = db.query(DATA_TABLE, dataColumns,
-//                null, null, null, null, null);
-//
-//        Cursor recordCursor = db.query(RECORDS_TABLE, recordColumns, String.format("%s = ?", RECORDS_DATE),
-//                new String[]{date}, null, null, null);
-//
-//
-//        recordCursor.moveToFirst();
-//        if (dataCursor.moveToFirst()) {
-//            do {
-//                recordMap.put(dataCursor.getString(0), new Record(
-//                        recordCursor.getInt(0),
-//                        recordCursor.getInt(1),
-//                        recordCursor.getInt(2),
-//                        recordCursor.getString(3)));
-//                recordCursor.moveToNext();
-//            } while (dataCursor.moveToNext());
-//        }
-//        dataCursor.close();
-//        recordCursor.close();
-//        db.close();
-//
-//        return recordMap;
-//    }
-
     public void insertRecords(String date) {
         List<Data> data = getData();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -169,7 +132,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void updateRecords(List<Record> records, String date) {
+    public void updateRecords(List<Record> records) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.beginTransaction();

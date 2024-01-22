@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataViewHolder> {
     private final List<Data> data;
-    private final List<Record> records;
+    private List<Record> records;
 
     public DataAdapter(List<Data> data, List<Record> records) {
         this.data = data;
@@ -28,6 +28,10 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataViewHolder
     @Override
     public void onBindViewHolder(DataViewHolder viewHolder, final int position) {
         viewHolder.bind(data.get(position), records.get(position));
+    }
+
+    public void setRecords(List<Record> records) {
+        this.records = records;
     }
 
     @Override

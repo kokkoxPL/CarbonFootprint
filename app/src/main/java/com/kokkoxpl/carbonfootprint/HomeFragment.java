@@ -1,12 +1,10 @@
 package com.kokkoxpl.carbonfootprint;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,8 +18,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-    private final String TAG = "CF";
-
     private TextView dateTextView;
     private ImageButton prev;
     private ImageButton next;
@@ -34,9 +30,10 @@ public class HomeFragment extends Fragment {
     private List<Data> data;
     private List<Record> records;
 
-    public HomeFragment(String currentDate) {
+    public HomeFragment(DatabaseHelper databaseHelper, List<Data> data) {
         super(R.layout.fragment_home);
-        this.currentDate = currentDate;
+        this.databaseHelper = databaseHelper;
+        this.data = data;
     }
 
     @Override
@@ -49,21 +46,10 @@ public class HomeFragment extends Fragment {
         save = view.findViewById(R.id.saveButton);
         recyclerView = view.findViewById(R.id.dataView);
 
-
-        Bundle bundle = getActivity().getIntent().getExtras();
-
-        if(bundle != null && bundle.containsKey("DATE")) {
-            currentDate = bundle.getString("DATE");
-        } else {
-            currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now());
-        }
-
         currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now());
 
         dateTextView.setText(currentDate);
 
-        databaseHelper = new DatabaseHelper(view.getContext());
-        data = databaseHelper.getData();
         records = databaseHelper.getRecords(currentDate);
 
         dataAdapter = new DataAdapter(data, records);
@@ -71,7 +57,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         save.setOnClickListener(v -> {
-            databaseHelper.updateRecords(records, currentDate);
+            databaseHelper.updateRecords(records);
         });
 
         prev.setOnClickListener(v -> {
@@ -84,12 +70,9 @@ public class HomeFragment extends Fragment {
     }
 
     public void changeDate(int days) {
-        Bundle b = new Bundle();
-        LocalDate date = LocalDate.parse(dateTextView.getText().toString());
-        b.putString("DATE", date.plusDays(days).toString());
-        Intent intent = new Intent(getActivity(), HomeFragment.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtras(b);
-        startActivity(intent);
+        currentDate = LocalDate.parse(currentDate).plusDays(days).toString();
+        records = databaseHelper.getRecords(currentDate);
+        dataAdapter.setRecords(records);
+        dataAdapter.notifyItemRangeChanged(0, dataAdapter.getItemCount());
     }
 }

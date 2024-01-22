@@ -9,25 +9,29 @@ import android.os.Bundle;
 
 import com.kokkoxpl.carbonfootprint.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
-    private final String TAG = "CF";
+import java.util.List;
 
+public class MainActivity extends AppCompatActivity {
+    private DatabaseHelper databaseHelper;
+    private List<Data> data;
     private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        databaseHelper = new DatabaseHelper(this);
+        data = databaseHelper.getData();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment(""));
+        replaceFragment(new HomeFragment(databaseHelper, data));
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int menuItemId =  item.getItemId();
 
             if (menuItemId ==  R.id.home) {
-                replaceFragment(new HomeFragment(""));
+                replaceFragment(new HomeFragment(databaseHelper, data));
                 return true;
             }
             return true;
