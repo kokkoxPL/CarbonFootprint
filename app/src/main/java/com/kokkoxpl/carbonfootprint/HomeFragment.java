@@ -71,6 +71,7 @@ public class HomeFragment extends Fragment {
 
     public void changeDate(int days) {
         currentDate = LocalDate.parse(currentDate).plusDays(days).toString();
+        dateTextView.setText(currentDate);
         records = databaseHelper.getRecords(currentDate);
         dataAdapter.setRecords(records);
         dataAdapter.notifyItemRangeChanged(0, dataAdapter.getItemCount());
