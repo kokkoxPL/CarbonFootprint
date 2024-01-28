@@ -26,7 +26,7 @@ public class HomeFragment extends Fragment {
 
     private DatabaseHelper databaseHelper;
     private DataAdapter dataAdapter;
-    private String currentDate;
+    private LocalDate currentDate;
     private List<Data> data;
     private List<Record> records;
 
@@ -46,11 +46,8 @@ public class HomeFragment extends Fragment {
         save = view.findViewById(R.id.saveButton);
         recyclerView = view.findViewById(R.id.dataView);
 
-        currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now());
-
-        dateTextView.setText(currentDate);
-
-        records = databaseHelper.getRecords(currentDate);
+        currentDate = LocalDate.now();
+        setNewDate();
 
         dataAdapter = new DataAdapter(data, records);
         recyclerView.setAdapter(dataAdapter);
@@ -70,10 +67,16 @@ public class HomeFragment extends Fragment {
     }
 
     public void changeDate(int days) {
-        currentDate = LocalDate.parse(currentDate).plusDays(days).toString();
-        dateTextView.setText(currentDate);
-        records = databaseHelper.getRecords(currentDate);
+        currentDate = currentDate.plusDays(1);
+        setNewDate();
+
         dataAdapter.setRecords(records);
         dataAdapter.notifyItemRangeChanged(0, dataAdapter.getItemCount());
+    }
+
+    public void setNewDate() {
+        String newDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(currentDate);
+        dateTextView.setText(newDate);
+        records = databaseHelper.getRecords(newDate);
     }
 }
