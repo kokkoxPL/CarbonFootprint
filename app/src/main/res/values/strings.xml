@@ -7,6 +7,6 @@
 
     <string name="minus_button_desc">minus</string>
     <string name="plus_button_desc">plus</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="hello_blank_fragment">Test</string>
 </resources>

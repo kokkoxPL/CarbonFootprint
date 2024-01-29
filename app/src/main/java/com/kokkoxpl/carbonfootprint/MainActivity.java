@@ -32,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
             if (menuItemId ==  R.id.home) {
                 replaceFragment(new HomeFragment(databaseHelper, data));
-                return true;
+            }
+            else if (menuItemId ==  R.id.settings) {
+                replaceFragment(new SettingsFragment());
             }
             return true;
         });

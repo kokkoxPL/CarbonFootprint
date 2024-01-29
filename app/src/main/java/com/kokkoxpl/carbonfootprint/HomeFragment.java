@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void changeDate(int days) {
-        currentDate = currentDate.plusDays(1);
+        currentDate = currentDate.plusDays(days);
         setNewDate();
 
         dataAdapter.setRecords(records);
