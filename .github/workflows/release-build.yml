@@ -46,11 +46,11 @@ jobs:
         run: ./gradlew assembleRelease --stacktrace
 
       - name: Add version to APK
-        run: mv app/build/outputs/apk/release/app-release.apk carbon-footprint.apk
+        run: mv app/build/outputs/apk/release/app-release.apk carbon-footprint-${{ env.RELEASE_VERSION }}.apk
 
       - name: Release APK
         uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: true
           prerelease: true
-          files: carbon-footprint.apk
+          files: carbon-footprint-${{ env.RELEASE_VERSION }}.apk
