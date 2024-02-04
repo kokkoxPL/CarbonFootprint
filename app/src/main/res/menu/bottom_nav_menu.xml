@@ -5,6 +5,10 @@
         android:title="@string/title_home"
         android:icon="@drawable/ic_plus_button"/>
     <item
+        android:id="@+id/report"
+        android:title="@string/title_report"
+        android:icon="@drawable/ic_left_button"/>
+    <item
         android:id="@+id/about"
         android:title="@string/title_about"
         android:icon="@drawable/ic_minus_button"/>

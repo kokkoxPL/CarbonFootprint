@@ -6,12 +6,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
-public class AboutFragment extends Fragment {
+public class ReportFragment extends Fragment {
+    private DatabaseHelper databaseHelper;
 
-    public AboutFragment() {
-        super(R.layout.fragment_about);
+    public ReportFragment(DatabaseHelper databaseHelper) {
+        super(R.layout.fragment_report);
+        this.databaseHelper = databaseHelper;
     }
 
     @Override

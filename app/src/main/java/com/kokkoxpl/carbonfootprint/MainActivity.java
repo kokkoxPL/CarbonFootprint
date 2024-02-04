@@ -30,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
             if (menuItemId ==  R.id.home) {
                 replaceFragment(new HomeFragment(databaseHelper, data));
             }
+            else if (menuItemId ==  R.id.report) {
+                replaceFragment(new ReportFragment(databaseHelper));
+            }
             else if (menuItemId ==  R.id.about) {
                 replaceFragment(new AboutFragment());
             }
