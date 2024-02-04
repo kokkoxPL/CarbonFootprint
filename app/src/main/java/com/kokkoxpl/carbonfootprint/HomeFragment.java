@@ -25,7 +25,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private DatabaseHelper databaseHelper;
-    private DataAdapter dataAdapter;
+    private RecordListAdapter recordListAdapter;
     private LocalDate currentDate;
     private List<Data> data;
     private List<Record> records;
@@ -49,8 +49,8 @@ public class HomeFragment extends Fragment {
         currentDate = LocalDate.now();
         setNewDate();
 
-        dataAdapter = new DataAdapter(data, records);
-        recyclerView.setAdapter(dataAdapter);
+        recordListAdapter = new RecordListAdapter(data, records);
+        recyclerView.setAdapter(recordListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         save.setOnClickListener(v -> {
@@ -70,8 +70,7 @@ public class HomeFragment extends Fragment {
         currentDate = currentDate.plusDays(days);
         setNewDate();
 
-        dataAdapter.setRecords(records);
-        dataAdapter.notifyItemRangeChanged(0, dataAdapter.getItemCount());
+        recordListAdapter.setRecords(records);
     }
 
     public void setNewDate() {
