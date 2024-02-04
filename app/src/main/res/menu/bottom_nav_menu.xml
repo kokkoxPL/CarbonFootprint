@@ -5,7 +5,7 @@
         android:title="@string/title_home"
         android:icon="@drawable/ic_plus_button"/>
     <item
-        android:id="@+id/settings"
-        android:title="@string/title_settings"
+        android:id="@+id/about"
+        android:title="@string/title_about"
         android:icon="@drawable/ic_minus_button"/>
 </menu>
