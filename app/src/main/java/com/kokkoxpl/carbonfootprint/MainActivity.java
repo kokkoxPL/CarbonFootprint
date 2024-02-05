@@ -12,15 +12,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private DatabaseHelper databaseHelper;
+    private DatabaseManager databaseManager;
     private List<Data> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        databaseHelper = new DatabaseHelper(this);
-        data = databaseHelper.getData();
+        databaseManager = new DatabaseManager(this).open();
+        data = databaseManager.getData();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
@@ -28,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
             int menuItemId =  item.getItemId();
 
             if (menuItemId ==  R.id.home) {
-                replaceFragment(new HomeFragment(databaseHelper, data));
+                replaceFragment(new HomeFragment(databaseManager, data));
             }
             else if (menuItemId ==  R.id.report) {
-                replaceFragment(new ReportFragment(databaseHelper));
+                replaceFragment(new ReportFragment(databaseManager));
             }
             else if (menuItemId ==  R.id.about) {
                 replaceFragment(new AboutFragment());
@@ -39,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
         bottomNavigationView.setSelectedItemId(R.id.home);
+    }
+
+    @Override
+    protected void onDestroy() {
+        databaseManager.close();
+        super.onDestroy();
     }
 
     private  void replaceFragment (Fragment fragment){

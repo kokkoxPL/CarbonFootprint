@@ -24,15 +24,15 @@ public class HomeFragment extends Fragment {
     private Button save;
     private RecyclerView recyclerView;
 
-    private DatabaseHelper databaseHelper;
+    private DatabaseManager databaseManager;
     private RecordListAdapter recordListAdapter;
     private LocalDate currentDate;
     private List<Data> data;
     private List<Record> records;
 
-    public HomeFragment(DatabaseHelper databaseHelper, List<Data> data) {
+    public HomeFragment(DatabaseManager databaseManager, List<Data> data) {
         super(R.layout.fragment_home);
-        this.databaseHelper = databaseHelper;
+        this.databaseManager = databaseManager;
         this.data = data;
     }
 
@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         save.setOnClickListener(v -> {
-            databaseHelper.updateRecords(records);
+            databaseManager.updateRecords(records);
         });
 
         prev.setOnClickListener(v -> {
@@ -76,6 +76,6 @@ public class HomeFragment extends Fragment {
     public void setNewDate() {
         String newDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(currentDate);
         dateTextView.setText(newDate);
-        records = databaseHelper.getRecords(newDate);
+        records = databaseManager.getRecords(newDate);
     }
 }
