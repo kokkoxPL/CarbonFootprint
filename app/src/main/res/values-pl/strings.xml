@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- BottomView -->
+    <string name="title_home">Start</string>
+    <string name="title_report">Raport</string>
+    <string name="title_about">O nas</string>
+
+    <!-- Home -->
+    <string name="home_save_records">Zapisz</string>
+
+    <!-- Report -->
+    <string-array name="option_array">
+        <item>Tydzień</item>
+        <item>Miesiąc</item>
+        <item>Rok</item>
+        <item>Wszystko</item>
+    </string-array>
+
+    <!-- About -->
+    <string name="about_about" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras varius mauris ac lacus porta efficitur. Donec maximus arcu quis orci sagittis, in volutpat ex varius. Fusce at nunc ipsum. Nunc pellentesque gravida feugiat. Vivamus nisl nisl, interdum at vehicula sit amet, finibus sed justo. Duis eleifend tempus erat, finibus pulvinar sapien tempus in. Mauris luctus faucibus euismod. Nullam suscipit id velit a condimentum. Nulla tristique quam sit amet mauris finibus, non iaculis purus consequat. Morbi ac nibh a nisl tempor suscipit ac sed urna. Donec faucibus augue quis turpis sodales scelerisque.</string>
+</resources>

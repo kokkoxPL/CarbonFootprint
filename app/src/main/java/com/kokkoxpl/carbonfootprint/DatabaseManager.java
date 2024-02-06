@@ -6,9 +6,18 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class DatabaseManager {
     // Database Information
@@ -54,7 +63,7 @@ public class DatabaseManager {
                 RECORDS_TABLE, ID, RECORDS_ID_OF_DATA, RECORDS_QUANTITY, RECORDS_DATE);
 
         private final String FILL_DATA_TABLE = String.format("INSERT INTO %s (%s, %s) VALUES " +
-                "('TikTok', 2.63), ('Twitch', 0.55), ('Facebook', 0.79), ('Reddit', 2.48), ('Twitter', 0.60)",
+                "('TikTok', 2.63), ('Twitch', 0.55), ('Twitter', 0.60), ('Facebook', 0.79), ('Reddit', 2.48);",
                 DATA_TABLE, DATA_NAME, DATA_COST);
 
         public DatabaseHelper(Context context) {
@@ -81,11 +90,13 @@ public class DatabaseManager {
         List<Data> data = new ArrayList<>();
         Cursor cursor = db.query(DATA_TABLE, null, null, null, null, null, null);
 
-        while (cursor.moveToNext()) {
-            data.add(new Data(
-                    cursor.getInt(0),
-                    cursor.getString(1),
-                    cursor.getFloat(2)));
+        if (cursor.moveToFirst()) {
+            do {
+                data.add(new Data(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getFloat(2)));
+            } while (cursor.moveToNext());
         }
 
         cursor.close();
@@ -105,16 +116,58 @@ public class DatabaseManager {
                     new String[]{date}, null, null, null);
         }
 
-        while (cursor.moveToNext()) {
-            records.add(new Record(
-                    cursor.getInt(0),
-                    cursor.getInt(1),
-                    cursor.getInt(2),
-                    cursor.getString(3)));
+        if (cursor.moveToFirst()) {
+            do {
+                records.add(new Record(
+                        cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getInt(2),
+                        cursor.getString(3)));
+            } while (cursor.moveToNext());
         }
 
         cursor.close();
         return records;
+    }
+
+    public String getReport(int position) {
+        List<Record> records = new ArrayList<>();
+        List<Data> data = getData();
+        LocalDate currentDate = LocalDate.now();
+
+        String selection = switch (position) {
+            case 0, 1, 2 -> String.format("%s BETWEEN ? AND ?", RECORDS_DATE);
+            default -> null;
+        };
+        String[] selectionArgs = switch (position) {
+            case 0 -> new String[] {currentDate.minusWeeks(1).plusDays(1).toString(), currentDate.toString()};
+            case 1 -> new String[] {currentDate.minusMonths(1).plusDays(1).toString(), currentDate.toString()};
+            case 2 -> new String[] {currentDate.minusYears(1).plusDays(1).toString(), currentDate.toString()};
+            default -> null;
+        };
+
+        Cursor cursor = db.query(RECORDS_TABLE, null, selection, selectionArgs, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                records.add(new Record(
+                        cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getInt(2),
+                        cursor.getString(3)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        double result = 0D;
+        Supplier<Stream<Data>> dataStream = data::stream;
+        for (var record: records) {
+            result += record.getQuantity() * dataStream.get()
+                    .filter(e -> e.getID() == record.getIdOfData())
+                    .findFirst().get().getCost();
+        }
+
+        return String.format("%.2f", result);
     }
 
     public void insertNewRecords(String date) {

@@ -21,7 +21,8 @@
         android:layout_weight="1"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:tint="?colorAccent"
-        android:src="@drawable/ic_minus_button" />
+        android:src="@drawable/ic_minus_button"
+        android:contentDescription="@string/minus_button_desc" />
 
     <TextView
         android:id="@+id/dataQuantity"
@@ -39,5 +40,6 @@
         android:layout_weight="1"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:tint="?colorAccent"
-        android:src="@drawable/ic_plus_button" />
+        android:src="@drawable/ic_plus_button"
+        android:contentDescription="@string/plus_button_desc" />
 </LinearLayout>

@@ -40,11 +40,11 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        dateTextView = view.findViewById(R.id.dateTextView);
-        prev = view.findViewById(R.id.prevDayButton);
-        next = view.findViewById(R.id.nextDayButton);
-        save = view.findViewById(R.id.saveButton);
-        recyclerView = view.findViewById(R.id.dataView);
+        dateTextView = view.findViewById(R.id.home_current_date);
+        prev = view.findViewById(R.id.home_previous_date);
+        next = view.findViewById(R.id.home_next_date);
+        save = view.findViewById(R.id.home_save_records);
+        recyclerView = view.findViewById(R.id.home_record_list);
 
         currentDate = LocalDate.now();
         setNewDate();

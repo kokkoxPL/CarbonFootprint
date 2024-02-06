@@ -6,12 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- TODO: Update blank fragment layout -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/dataView"
+        android:id="@+id/home_record_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/saveButton"
+        app:layout_constraintBottom_toTopOf="@+id/home_save_records"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -19,17 +18,17 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <Button
-        android:id="@+id/saveButton"
+        android:id="@+id/home_save_records"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_save_records"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        android:text="@string/home_save_records"
+        app:layout_constraintBottom_toTopOf="@+id/home_date_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/home_date_layout"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:orientation="horizontal"
@@ -38,7 +37,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageButton
-            android:id="@+id/prevDayButton"
+            android:id="@+id/home_previous_date"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -48,7 +47,7 @@
             android:contentDescription="@string/minus_button_desc" />
 
         <TextView
-            android:id="@+id/dateTextView"
+            android:id="@+id/home_current_date"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="2"
@@ -57,7 +56,7 @@
             tools:text="@tools:sample/date/ddmmyy" />
 
         <ImageButton
-            android:id="@+id/nextDayButton"
+            android:id="@+id/home_next_date"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
