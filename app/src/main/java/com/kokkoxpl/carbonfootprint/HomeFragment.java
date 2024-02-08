@@ -8,13 +8,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -23,6 +26,7 @@ public class HomeFragment extends Fragment {
     private ImageButton next;
     private Button save;
     private RecyclerView recyclerView;
+    CalendarView calendarView;
 
     private DatabaseManager databaseManager;
     private RecordListAdapter recordListAdapter;
@@ -45,6 +49,9 @@ public class HomeFragment extends Fragment {
         next = view.findViewById(R.id.home_next_date);
         save = view.findViewById(R.id.home_save_records);
         recyclerView = view.findViewById(R.id.home_record_list);
+        calendarView = view.findViewById(R.id.calendarView);
+
+        calendarView.setVisibility(View.GONE);
 
         currentDate = LocalDate.now();
         setNewDate();
@@ -64,12 +71,26 @@ public class HomeFragment extends Fragment {
         next.setOnClickListener(v -> {
             changeDate(1);
         });
+
+        dateTextView.setOnClickListener(l -> {
+            calendarView.setVisibility(View.VISIBLE);
+        });
+
+        calendarView.setOnDateChangeListener((v, year, month, dayOfMonth) -> {
+            currentDate = LocalDate.of(year, month + 1, dayOfMonth);
+            changeDate(0);
+            v.setVisibility(View.GONE);
+        });
     }
 
     public void changeDate(int days) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(calendarView.getDate());
+        calendar.add(Calendar.DAY_OF_MONTH, days);
+        calendarView.setDate(calendar.getTimeInMillis());
+
         currentDate = currentDate.plusDays(days);
         setNewDate();
-
         recordListAdapter.setRecords(records);
     }
 
