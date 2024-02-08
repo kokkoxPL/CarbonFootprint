@@ -75,9 +75,8 @@
             android:id="@+id/calendarView"
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:layout_marginBottom="20dp"
             android:background="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/home_date_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
@@ -84,12 +85,8 @@ public class HomeFragment extends Fragment {
     }
 
     public void changeDate(int days) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(calendarView.getDate());
-        calendar.add(Calendar.DAY_OF_MONTH, days);
-        calendarView.setDate(calendar.getTimeInMillis());
-
         currentDate = currentDate.plusDays(days);
+        calendarView.setDate(currentDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli());
         setNewDate();
         recordListAdapter.setRecords(records);
     }
