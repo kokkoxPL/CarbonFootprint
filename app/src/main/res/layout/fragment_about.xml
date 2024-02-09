@@ -11,19 +11,6 @@
             android:layout_height="wrap_content"
             android:padding="20dp">
 
-            <LinearLayout
-                android:id="@+id/about_linear_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-
-
-            </LinearLayout>
-
             <TextView
                 android:id="@+id/about_title"
                 android:layout_width="wrap_content"
@@ -32,7 +19,43 @@
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/about_linear_layout" />
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/about_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/about_title">
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/facebook_logo"
+                    android:layout_marginHorizontal="10dp" />
+
+                <ImageButton
+                    android:id="@+id/imageButton2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/instagram_logo"
+                    android:layout_marginHorizontal="10dp" />
+
+                <ImageButton
+                    android:id="@+id/imageButton3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/tik_tok_logo"
+                    android:layout_marginHorizontal="10dp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/about_about"
@@ -44,7 +67,7 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/about_title" />
+                app:layout_constraintTop_toBottomOf="@+id/about_linear_layout" />
 
             <TextView
                 android:id="@+id/about_about_2"
