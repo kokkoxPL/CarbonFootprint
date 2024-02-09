@@ -1,8 +1,10 @@
 package com.kokkoxpl.carbonfootprint;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -24,7 +26,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
     @NonNull
     @Override
     public RecordViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        return new RecordViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.data_card, viewGroup, false));
+        return new RecordViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.record_row, viewGroup, false));
     }
 
     @Override
@@ -44,35 +46,46 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
 
     public static class RecordViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameTextView;
-        private final TextView quantityTextView;
+        private final TextView valueTextView;
+        private final EditText quantityEditText;
         private final ImageButton minusButton;
         private final ImageButton plusButton;
 
         public RecordViewHolder(View view) {
             super(view);
-            nameTextView = view.findViewById(R.id.dataText);
-            quantityTextView = view.findViewById(R.id.dataQuantity);
-            minusButton = view.findViewById(R.id.minusButton);
-            plusButton = view.findViewById(R.id.plusButton);
+            nameTextView = view.findViewById(R.id.record_row_data_name);
+            valueTextView = view.findViewById(R.id.record_row_data_value);
+            quantityEditText = view.findViewById(R.id.record_row_data_quantity);
+            minusButton = view.findViewById(R.id.record_row_minus_button);
+            plusButton = view.findViewById(R.id.record_row_plus_button);
         }
 
+
         public void bind(final Data item, Record record) {
-            nameTextView.setText(String.format("%s(%s)", item.getName(), item.getCost()));
-            quantityTextView.setText(String.valueOf(record.getQuantity()));
+            int changeValue = 15;
+            nameTextView.setText(item.getName());
+            valueTextView.setText(String.format("%sg CO2e/min", item.getCost()));
+
+            quantityEditText.setText(String.valueOf(record.getQuantity()));
 
             plusButton.setOnClickListener(v -> {
-                int value = Integer.parseInt(quantityTextView.getText().toString());
-                record.setQuantity(value + 1);
-                quantityTextView.setText(String.valueOf(value + 1));
+                changeQuantity(changeValue, record);
             });
 
             minusButton.setOnClickListener(v -> {
-                int value = Integer.parseInt(quantityTextView.getText().toString());
-                if(value > 0) {
-                    record.setQuantity(value - 1);
-                    quantityTextView.setText(String.valueOf(value - 1));
-                }
+                changeQuantity(-changeValue, record);
             });
+        }
+
+        private void changeQuantity(int i, Record record) {
+            String value = quantityEditText.getText().toString();
+            if (value.equals("")) return;
+
+            int newValue = Integer.parseInt(value) + i;
+            if (newValue < 0) newValue = 0;
+
+            record.setQuantity(newValue);
+            quantityEditText.setText(String.valueOf(newValue));
         }
     }
 }

@@ -62,8 +62,11 @@ public class DatabaseManager {
                         "(%s INTEGER PRIMARY KEY AUTOINCREMENT, %s INT NOT NULL, %s INT, %s DATE NOT NULL);",
                 RECORDS_TABLE, ID, RECORDS_ID_OF_DATA, RECORDS_QUANTITY, RECORDS_DATE);
 
-        private final String FILL_DATA_TABLE = String.format("INSERT INTO %s (%s, %s) VALUES " +
-                "('TikTok', 2.63), ('Twitch', 0.55), ('Twitter', 0.60), ('Facebook', 0.79), ('Reddit', 2.48);",
+
+        private final String FILL_DATA_TABLE = String.format("""
+                INSERT INTO %s (%s, %s) VALUES
+                ('TikTok', 2.63), ('Instagram', 1.05), ('Snapchat', 0.87), ('YouTube', 0.46),
+                ('Facebook', 0.79), ('Twitter', 0.6), ('Twitch', 0.55), ('Reddit', 2.48);""",
                 DATA_TABLE, DATA_NAME, DATA_COST);
 
         public DatabaseHelper(Context context) {

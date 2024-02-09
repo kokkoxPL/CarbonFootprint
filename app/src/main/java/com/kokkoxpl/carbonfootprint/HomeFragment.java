@@ -74,7 +74,10 @@ public class HomeFragment extends Fragment {
         });
 
         dateTextView.setOnClickListener(l -> {
-            calendarView.setVisibility(View.VISIBLE);
+            switch (calendarView.getVisibility()) {
+                case View.GONE -> calendarView.setVisibility(View.VISIBLE);
+                case View.VISIBLE -> calendarView.setVisibility(View.GONE);
+            }
         });
 
         calendarView.setOnDateChangeListener((v, year, month, dayOfMonth) -> {
