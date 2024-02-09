@@ -42,4 +42,5 @@
         app:tint="?colorAccent"
         android:src="@drawable/ic_plus_button"
         android:contentDescription="@string/plus_button_desc" />
+
 </LinearLayout>

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -20,17 +21,18 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
         this.records = records;
     }
 
+    @NonNull
     @Override
     public RecordViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         return new RecordViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.data_card, viewGroup, false));
     }
 
     @Override
-    public void onBindViewHolder(RecordViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(@NonNull RecordViewHolder viewHolder, final int position) {
         viewHolder.bind(data.get(position), records.get(position));
     }
 
-    public void setRecords(List<Record> records) {
+    public void setRecords(@NonNull List<Record> records) {
         this.records = records;
         notifyItemRangeChanged(0, getItemCount());
     }

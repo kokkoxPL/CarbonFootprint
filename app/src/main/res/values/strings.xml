@@ -20,5 +20,36 @@
     </string-array>
 
     <!-- About -->
-    <string name="about_about">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras varius mauris ac lacus porta efficitur. Donec maximus arcu quis orci sagittis, in volutpat ex varius. Fusce at nunc ipsum. Nunc pellentesque gravida feugiat. Vivamus nisl nisl, interdum at vehicula sit amet, finibus sed justo. Duis eleifend tempus erat, finibus pulvinar sapien tempus in. Mauris luctus faucibus euismod. Nullam suscipit id velit a condimentum. Nulla tristique quam sit amet mauris finibus, non iaculis purus consequat. Morbi ac nibh a nisl tempor suscipit ac sed urna. Donec faucibus augue quis turpis sodales scelerisque.</string>
+    <string name="about_about" translatable="false">
+        Kampania Cyfrowy Uśmiech to projekt tworzony przez grupę ambitnych uczniów z Zespołu Szkół
+        Technicznych i Ogólnokształcących w Jarosławiu. Naszą misją jest zwiększanie świadomości na
+        temat cyfrowego śladu węglowego i wpływu otaczającej nas technologii na środowisko. W ramach
+        akcji chcemy przekazać wiedzę dotyczącą sposobów na zmniejszenie własnego cyfrowego śladu
+        węglowego, a także udostępnić pomocne narzędzia do jego monitorowania. Cieszymy się, że możemy
+        wspólnie budować bardziej świadome i zrównoważone nawyki przyjazne dla naszej planety.
+    </string>
+
+    <string name="about_about_2" translatable="false">Nasz zespół:</string>
+
+    <string-array name="about_list" translatable="false">
+        <item>Karolina Łakomy</item>
+        <item>Tobiasz Liszka</item>
+        <item>Adrian Gamracy</item>
+        <item>Aleksandra Kubas</item>
+        <item>Bartosz Popek</item>
+        <item>Fabian Bar</item>
+        <item>Gabriel Malach</item>
+        <item>Jakub Mazurkiewicz</item>
+        <item>Mateusz Skupień</item>
+        <item>Michał Dubiel</item>
+        <item>Patryk Balawender</item>
+        <item>Polina Horodovikova</item>
+        <item>Tobiasz Liszka</item>
+        <item>Weronika Dębicka</item>
+    </string-array>
+
+    <string name="about_about_3" translatable="false">
+        Kampania Cyfrowy Uśmiech powstaje dzięki finansowaniu w Programie „Akcelerator Pro”
+        organizowanym przez Fundację Inter Cars i Fundację Szkoła z Klasą.
+    </string>
 </resources>
