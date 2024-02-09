@@ -22,23 +22,23 @@ public class MainActivity extends AppCompatActivity {
         databaseManager = new DatabaseManager(this).open();
         data = databaseManager.getData();
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int menuItemId =  item.getItemId();
 
-            if (menuItemId ==  R.id.home) {
+            if (menuItemId ==  R.id.menu_home) {
                 replaceFragment(new HomeFragment(databaseManager, data));
             }
-            else if (menuItemId ==  R.id.report) {
-                replaceFragment(new ReportFragment(databaseManager));
+            else if (menuItemId ==  R.id.menu_report) {
+                replaceFragment(new ReportFragment(databaseManager, data));
             }
-            else if (menuItemId ==  R.id.about) {
+            else if (menuItemId ==  R.id.menu_about) {
                 replaceFragment(new AboutFragment());
             }
             return true;
         });
-        bottomNavigationView.setSelectedItemId(R.id.home);
+        bottomNavigationView.setSelectedItemId(R.id.menu_home);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private  void replaceFragment (Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.flFragment, fragment);
+        transaction.replace(R.id.fragment, fragment);
         transaction.commit();
     }
 }

@@ -4,15 +4,16 @@
     <string name="plus_button_desc" translatable="false">plus</string>
 
     <!-- BottomView -->
-    <string name="title_home">Home</string>
-    <string name="title_report">Report</string>
-    <string name="title_about">About</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_report">Report</string>
+    <string name="menu_about">About</string>
 
     <!-- Home -->
     <string name="home_save_records">Save</string>
 
     <!-- Report -->
-    <string-array name="option_array">
+    <string name="report_report">Your total use:</string>
+    <string-array name="report_options">
         <item>Week</item>
         <item>Month</item>
         <item>Year</item>

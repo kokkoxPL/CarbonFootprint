@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- BottomView -->
-    <string name="title_home">Start</string>
-    <string name="title_report">Raport</string>
-    <string name="title_about">O nas</string>
+    <string name="menu_home">Start</string>
+    <string name="menu_report">Raport</string>
+    <string name="menu_about">O nas</string>
 
     <!-- Home -->
     <string name="home_save_records">Zapisz</string>
 
     <!-- Report -->
-    <string-array name="option_array">
+    <string name="report_report">Twoje całkowite zużycie :</string>
+    <string-array name="report_options">
         <item>Tydzień</item>
         <item>Miesiąc</item>
         <item>Rok</item>

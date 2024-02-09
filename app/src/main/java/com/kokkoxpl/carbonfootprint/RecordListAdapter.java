@@ -1,5 +1,7 @@
 package com.kokkoxpl.carbonfootprint;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,22 +71,39 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
             quantityEditText.setText(String.valueOf(record.getQuantity()));
 
             plusButton.setOnClickListener(v -> {
-                changeQuantity(changeValue, record);
+                setQuantityEditText(changeValue);
             });
 
             minusButton.setOnClickListener(v -> {
-                changeQuantity(-changeValue, record);
+                setQuantityEditText(-changeValue);
+            });
+
+            quantityEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (s.toString().equals("")) {
+                        quantityEditText.setText("0");
+                        return;
+                    }
+
+                    record.setQuantity(Integer.parseInt(s.toString()));
+                }
             });
         }
 
-        private void changeQuantity(int i, Record record) {
+        private void setQuantityEditText(int changeValue) {
             String value = quantityEditText.getText().toString();
-            if (value.equals("")) return;
+            if (value.equals("")) value = "0";
 
-            int newValue = Integer.parseInt(value) + i;
+            int newValue = Integer.parseInt(value) + changeValue;
             if (newValue < 0) newValue = 0;
 
-            record.setQuantity(newValue);
             quantityEditText.setText(String.valueOf(newValue));
         }
     }

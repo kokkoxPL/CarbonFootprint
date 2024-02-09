@@ -6,18 +6,12 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
+import com.kokkoxpl.carbonfootprint.enums.ReportOptions;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 public class DatabaseManager {
     // Database Information
@@ -133,21 +127,11 @@ public class DatabaseManager {
         return records;
     }
 
-    public String getReport(int position) {
+    public List<Record> getRecordsByDate(ReportOptions reportOption) {
         List<Record> records = new ArrayList<>();
-        List<Data> data = getData();
-        LocalDate currentDate = LocalDate.now();
 
-        String selection = switch (position) {
-            case 0, 1, 2 -> String.format("%s BETWEEN ? AND ?", RECORDS_DATE);
-            default -> null;
-        };
-        String[] selectionArgs = switch (position) {
-            case 0 -> new String[] {currentDate.minusWeeks(1).plusDays(1).toString(), currentDate.toString()};
-            case 1 -> new String[] {currentDate.minusMonths(1).plusDays(1).toString(), currentDate.toString()};
-            case 2 -> new String[] {currentDate.minusYears(1).plusDays(1).toString(), currentDate.toString()};
-            default -> null;
-        };
+        String selection = getSelection(reportOption);
+        String[] selectionArgs = getSelectionArgs(reportOption);
 
         Cursor cursor = db.query(RECORDS_TABLE, null, selection, selectionArgs, null, null, null);
 
@@ -161,16 +145,7 @@ public class DatabaseManager {
             } while (cursor.moveToNext());
         }
         cursor.close();
-
-        double result = 0D;
-        Supplier<Stream<Data>> dataStream = data::stream;
-        for (var record: records) {
-            result += record.getQuantity() * dataStream.get()
-                    .filter(e -> e.getID() == record.getIdOfData())
-                    .findFirst().get().getCost();
-        }
-
-        return String.format("%.2f", result);
+        return records;
     }
 
     public void insertNewRecords(String date) {
@@ -202,8 +177,7 @@ public class DatabaseManager {
 
             for (Record value : records) {
                 contentValues.put(RECORDS_QUANTITY, value.getQuantity());
-                db.update(RECORDS_TABLE, contentValues,
-                        String.format("%s = %s", ID, value.getId()), null);
+                db.update(RECORDS_TABLE, contentValues, String.format("%s = %s", ID, value.getId()), null);
             }
 
             db.setTransactionSuccessful();
@@ -211,4 +185,22 @@ public class DatabaseManager {
             db.endTransaction();
         }
     }
+
+    private String getSelection(ReportOptions reportOption) {
+        return switch (reportOption) {
+            case WEEK, YEAR, MONTH, ALL -> String.format("%s BETWEEN ? AND ?", RECORDS_DATE);
+        };
+    }
+
+    private String[] getSelectionArgs(ReportOptions reportOption) {
+        LocalDate currentDate = LocalDate.now();
+
+        return switch (reportOption) {
+            case WEEK -> new String[] {currentDate.minusWeeks(1).plusDays(1).toString(), currentDate.toString()};
+            case MONTH -> new String[] {currentDate.minusMonths(1).plusDays(1).toString(), currentDate.toString()};
+            case YEAR -> new String[] {currentDate.minusYears(1).plusDays(1).toString(), currentDate.toString()};
+            case ALL -> new String[] {LocalDate.ofEpochDay(0).toString(), currentDate.toString()};
+        };
+    }
+
 }

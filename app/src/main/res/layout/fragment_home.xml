@@ -72,7 +72,7 @@
         </LinearLayout>
 
         <CalendarView
-            android:id="@+id/calendarView"
+            android:id="@+id/home_calendar"
             android:layout_width="300dp"
             android:layout_height="300dp"
             android:background="@color/white"

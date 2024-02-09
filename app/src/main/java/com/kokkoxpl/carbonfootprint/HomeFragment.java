@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -32,7 +30,7 @@ public class HomeFragment extends Fragment {
     private DatabaseManager databaseManager;
     private RecordListAdapter recordListAdapter;
     private LocalDate currentDate;
-    private List<Data> data;
+    private final List<Data> data;
     private List<Record> records;
 
     public HomeFragment(DatabaseManager databaseManager, List<Data> data) {
@@ -50,7 +48,7 @@ public class HomeFragment extends Fragment {
         next = view.findViewById(R.id.home_next_date);
         save = view.findViewById(R.id.home_save_records);
         recyclerView = view.findViewById(R.id.home_record_list);
-        calendarView = view.findViewById(R.id.calendarView);
+        calendarView = view.findViewById(R.id.home_calendar);
 
         calendarView.setVisibility(View.GONE);
 
