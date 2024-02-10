@@ -103,14 +103,14 @@ public class DatabaseManager {
     public List<Record> getRecords(String date)
     {
         List<Record> records = new ArrayList<>();
-        Cursor cursor = db.query(RECORDS_TABLE, null, String.format("%s = ?", RECORDS_DATE),
-                new String[]{date}, null, null, null);
+        String selection = String.format("%s = ?", RECORDS_DATE);
+        String[] selectionArgs = new String[] {date};
+        Cursor cursor = db.query(RECORDS_TABLE, null, selection, selectionArgs, null, null, null);
 
         // Do if no records
         if(!cursor.moveToFirst()) {
             insertNewRecords(date);
-            cursor = db.query(RECORDS_TABLE, null, String.format("%s = ?", RECORDS_DATE),
-                    new String[]{date}, null, null, null);
+            cursor = db.query(RECORDS_TABLE, null, selection, selectionArgs, null, null, null);
         }
 
         if (cursor.moveToFirst()) {
@@ -130,7 +130,7 @@ public class DatabaseManager {
     public List<Record> getRecordsByDate(ReportOptions reportOption) {
         List<Record> records = new ArrayList<>();
 
-        String selection = getSelection(reportOption);
+        String selection = String.format("%s BETWEEN ? AND ?", RECORDS_DATE);
         String[] selectionArgs = getSelectionArgs(reportOption);
 
         Cursor cursor = db.query(RECORDS_TABLE, null, selection, selectionArgs, null, null, null);
@@ -184,12 +184,6 @@ public class DatabaseManager {
         } finally {
             db.endTransaction();
         }
-    }
-
-    private String getSelection(ReportOptions reportOption) {
-        return switch (reportOption) {
-            case WEEK, YEAR, MONTH, ALL -> String.format("%s BETWEEN ? AND ?", RECORDS_DATE);
-        };
     }
 
     private String[] getSelectionArgs(ReportOptions reportOption) {

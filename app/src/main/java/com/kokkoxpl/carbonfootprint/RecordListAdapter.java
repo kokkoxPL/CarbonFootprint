@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Locale;
 
 
 public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.RecordViewHolder> {
@@ -66,7 +67,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
         public void bind(final Data item, Record record) {
             int changeValue = 15;
             nameTextView.setText(item.getName());
-            valueTextView.setText(String.format("%sg CO2e/min", item.getCost()));
+            valueTextView.setText(String.format(Locale.getDefault(),"%.2f", item.getCost()));
 
             quantityEditText.setText(String.valueOf(record.getQuantity()));
 
@@ -91,7 +92,6 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
                         quantityEditText.setText("0");
                         return;
                     }
-
                     record.setQuantity(Integer.parseInt(s.toString()));
                 }
             });

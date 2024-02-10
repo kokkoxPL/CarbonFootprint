@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">Cyfrowy Uśmiech</string>
-    <string name="minus_button_desc" translatable="false">minus</string>
-    <string name="plus_button_desc" translatable="false">plus</string>
 
     <!-- BottomView -->
     <string name="menu_home">Home</string>
@@ -10,6 +8,9 @@
 
     <!-- Home -->
     <string name="home_save_records">Save</string>
+    <string name="home_first_row_name">Name</string>
+    <string name="home_first_row_value" translatable="false">g CO2e/min</string>
+    <string name="home_first_row_quantity" translatable="false">min</string>
 
     <!-- Report -->
     <string name="report_report">Your total use:</string>

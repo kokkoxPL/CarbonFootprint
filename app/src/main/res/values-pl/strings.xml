@@ -7,6 +7,7 @@
 
     <!-- Home -->
     <string name="home_save_records">Zapisz</string>
+    <string name="home_first_row_name">Nazwa</string>
 
     <!-- Report -->
     <string name="report_report">Twoje całkowite zużycie :</string>

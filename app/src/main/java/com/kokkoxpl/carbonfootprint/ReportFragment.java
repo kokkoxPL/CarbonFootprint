@@ -1,5 +1,6 @@
 package com.kokkoxpl.carbonfootprint;
 
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -26,6 +28,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.renderer.LegendRenderer;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
+import com.google.android.material.color.MaterialColors;
 import com.kokkoxpl.carbonfootprint.enums.ReportOptions;
 
 import java.util.ArrayList;
@@ -85,7 +88,6 @@ public class ReportFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
-
     }
 
     private void setUsage() {

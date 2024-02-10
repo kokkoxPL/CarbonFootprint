@@ -30,8 +30,7 @@
         android:layout_weight="1"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:tint="?colorAccent"
-        android:src="@drawable/ic_minus_button"
-        android:contentDescription="@string/minus_button_desc" />
+        android:src="@drawable/ic_minus_button" />
 
     <EditText
         android:id="@+id/record_row_data_quantity"
@@ -50,7 +49,6 @@
         android:layout_weight="1"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:tint="?colorAccent"
-        android:src="@drawable/ic_plus_button"
-        android:contentDescription="@string/plus_button_desc" />
+        android:src="@drawable/ic_plus_button" />
 
 </LinearLayout>
