@@ -8,5 +8,4 @@
     android:paddingVertical="4dp"
     android:textSize="18sp"
     android:textAlignment="center"
-    tools:text="Imię Nazwisko"
-/>
+    tools:text="Imię Nazwisko" />

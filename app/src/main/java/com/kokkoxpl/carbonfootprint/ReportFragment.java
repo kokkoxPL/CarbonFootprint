@@ -1,19 +1,13 @@
 package com.kokkoxpl.carbonfootprint;
 
-import android.content.res.Resources;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -25,10 +19,6 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.renderer.LegendRenderer;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Utils;
-import com.google.android.material.color.MaterialColors;
 import com.kokkoxpl.carbonfootprint.enums.ReportOptions;
 
 import java.util.ArrayList;
@@ -56,7 +46,7 @@ public class ReportFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        spinner = view.findViewById(R.id.report_spinner);
+        spinner = view.findViewById(R.id.report_options);
         resultTextView = view.findViewById(R.id.report_result);
         pieChart = view.findViewById(R.id.report_pie_chart);
 

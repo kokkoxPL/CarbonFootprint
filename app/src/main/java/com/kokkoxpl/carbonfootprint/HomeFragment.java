@@ -44,8 +44,8 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         dateTextView = view.findViewById(R.id.home_current_date);
-        prev = view.findViewById(R.id.home_previous_date);
-        next = view.findViewById(R.id.home_next_date);
+        prev = view.findViewById(R.id.home_previous_day);
+        next = view.findViewById(R.id.home_next_day);
         save = view.findViewById(R.id.home_save_records);
         recyclerView = view.findViewById(R.id.home_record_list);
         calendarView = view.findViewById(R.id.home_calendar);

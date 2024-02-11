@@ -13,7 +13,7 @@
     <string name="home_first_row_quantity" translatable="false">min</string>
 
     <!-- Report -->
-    <string name="report_report">Your total use:</string>
+    <string name="report_report_1">Your total use:</string>
     <string-array name="report_options">
         <item>Week</item>
         <item>Month</item>
