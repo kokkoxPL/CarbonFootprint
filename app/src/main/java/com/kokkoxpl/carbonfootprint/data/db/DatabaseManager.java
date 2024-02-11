@@ -1,4 +1,4 @@
-package com.kokkoxpl.carbonfootprint;
+package com.kokkoxpl.carbonfootprint.data.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.kokkoxpl.carbonfootprint.enums.ReportOptions;
+import com.kokkoxpl.carbonfootprint.data.Data;
+import com.kokkoxpl.carbonfootprint.data.Record;
+import com.kokkoxpl.carbonfootprint.data.enums.ReportOptions;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

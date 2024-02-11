@@ -1,4 +1,4 @@
-package com.kokkoxpl.carbonfootprint.enums;
+package com.kokkoxpl.carbonfootprint.data.enums;
 
 public enum ReportOptions {
     WEEK,

@@ -1,8 +1,7 @@
-package com.kokkoxpl.carbonfootprint;
+package com.kokkoxpl.carbonfootprint.adapters;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.kokkoxpl.carbonfootprint.R;
+import com.kokkoxpl.carbonfootprint.data.Data;
+import com.kokkoxpl.carbonfootprint.data.Record;
 
 import java.util.List;
 import java.util.Locale;

@@ -1,4 +1,4 @@
-package com.kokkoxpl.carbonfootprint;
+package com.kokkoxpl.carbonfootprint.fragments;
 
 import android.os.Bundle;
 
@@ -13,6 +13,12 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.kokkoxpl.carbonfootprint.R;
+import com.kokkoxpl.carbonfootprint.adapters.RecordListAdapter;
+import com.kokkoxpl.carbonfootprint.data.Data;
+import com.kokkoxpl.carbonfootprint.data.Record;
+import com.kokkoxpl.carbonfootprint.data.db.DatabaseManager;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;

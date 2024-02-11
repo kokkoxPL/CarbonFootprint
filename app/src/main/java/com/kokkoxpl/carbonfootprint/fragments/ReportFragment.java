@@ -1,4 +1,4 @@
-package com.kokkoxpl.carbonfootprint;
+package com.kokkoxpl.carbonfootprint.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,7 +19,11 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.kokkoxpl.carbonfootprint.enums.ReportOptions;
+import com.kokkoxpl.carbonfootprint.R;
+import com.kokkoxpl.carbonfootprint.data.Data;
+import com.kokkoxpl.carbonfootprint.data.Record;
+import com.kokkoxpl.carbonfootprint.data.db.DatabaseManager;
+import com.kokkoxpl.carbonfootprint.data.enums.ReportOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
