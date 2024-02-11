@@ -33,7 +33,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     CalendarView calendarView;
 
-    private DatabaseManager databaseManager;
+    private final DatabaseManager databaseManager;
     private RecordListAdapter recordListAdapter;
     private LocalDate currentDate;
     private final List<Data> data;

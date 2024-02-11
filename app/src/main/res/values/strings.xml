@@ -30,9 +30,7 @@
         węglowego, a także udostępnić pomocne narzędzia do jego monitorowania. Cieszymy się, że możemy
         wspólnie budować bardziej świadome i zrównoważone nawyki przyjazne dla naszej planety.
     </string>
-
     <string name="about_about_2" translatable="false">Nasz zespół:</string>
-
     <string-array name="about_list" translatable="false">
         <item>Karolina Łakomy</item>
         <item>Tobiasz Liszka</item>
@@ -49,7 +47,6 @@
         <item>Tobiasz Liszka</item>
         <item>Weronika Dębicka</item>
     </string-array>
-
     <string name="about_about_3" translatable="false">
         Kampania Cyfrowy Uśmiech powstaje dzięki finansowaniu w Programie „Akcelerator Pro”
         organizowanym przez Fundację Inter Cars i Fundację Szkoła z Klasą.

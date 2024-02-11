@@ -36,7 +36,7 @@ public class ReportFragment extends Fragment {
     private TextView resultTextView;
     private PieChart pieChart;
 
-    private DatabaseManager databaseManager;
+    private final DatabaseManager databaseManager;
     private final List<Data> data;
     private List<Record> records;
     private Map<Integer, Float> dataCostMap;
@@ -107,20 +107,17 @@ public class ReportFragment extends Fragment {
                     .map((record) -> record.getQuantity() * dataCostMap.get(record.getIdOfData()))
                     .reduce(0f, Float::sum);
 
-
             entries.add(new PieEntry(f, value.getName()));
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(colors);
-        dataSet.setValueTextSize(14f);
-        dataSet.setSliceSpace(1f);
-        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueTextSize(16f);
+        dataSet.setSliceSpace(2f);
+        dataSet.setValueTextColor(Color.WHITE);
 
         PieData data = new PieData(dataSet);
-        Description description = new Description();
-        description.setText("");
-        pieChart.setDescription(description);
+        pieChart.getDescription().setText("");
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleRadius(40f);
         pieChart.setTransparentCircleRadius(0f);
@@ -130,6 +127,7 @@ public class ReportFragment extends Fragment {
         legend.setTextSize(14f);
         legend.setForm(Legend.LegendForm.CIRCLE);
         legend.setWordWrapEnabled(true);
+        legend.setTextColor(Color.LTGRAY);
 
         pieChart.setData(data);
         pieChart.invalidate();
