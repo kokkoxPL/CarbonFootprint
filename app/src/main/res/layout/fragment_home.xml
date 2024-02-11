@@ -131,7 +131,7 @@
             android:id="@+id/home_calendar"
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:background="@color/white"
+            android:background="@color/material_dynamic_primary30"
             app:layout_constraintBottom_toTopOf="@+id/home_date_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

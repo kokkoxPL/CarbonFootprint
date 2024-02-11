@@ -11,10 +11,8 @@
 
     <!-- Report -->
     <string name="report_report_1">Twoje całkowite zużycie :</string>
-    <string-array name="report_options">
-        <item>Tydzień</item>
-        <item>Miesiąc</item>
-        <item>Rok</item>
-        <item>Wszystko</item>
-    </string-array>
+    <string name="report_options_0">Tydzień</string>
+    <string name="report_options_1">Miesiąc</string>
+    <string name="report_options_2">Rok</string>
+    <string name="report_options_3">Wszystko</string>
 </resources>

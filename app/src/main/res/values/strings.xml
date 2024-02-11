@@ -14,12 +14,10 @@
 
     <!-- Report -->
     <string name="report_report_1">Your total use:</string>
-    <string-array name="report_options">
-        <item>Week</item>
-        <item>Month</item>
-        <item>Year</item>
-        <item>All</item>
-    </string-array>
+    <string name="report_options_0">Week</string>
+    <string name="report_options_1">Month</string>
+    <string name="report_options_2">Year</string>
+    <string name="report_options_3">All</string>
 
     <!-- About -->
     <string name="about_about" translatable="false">

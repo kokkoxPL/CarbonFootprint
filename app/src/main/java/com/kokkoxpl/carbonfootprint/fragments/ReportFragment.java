@@ -7,18 +7,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.tabs.TabLayout;
 import com.kokkoxpl.carbonfootprint.R;
 import com.kokkoxpl.carbonfootprint.data.Data;
 import com.kokkoxpl.carbonfootprint.data.Record;
@@ -32,14 +31,16 @@ import java.util.Locale;
 import java.util.Map;
 
 public class ReportFragment extends Fragment {
-    private Spinner spinner;
+    private TabLayout tabLayout;
     private TextView resultTextView;
     private PieChart pieChart;
+    private CircularProgressIndicator circularProgressIndicator;
 
     private final DatabaseManager databaseManager;
     private final List<Data> data;
     private List<Record> records;
     private Map<Integer, Float> dataCostMap;
+    private List<PieEntry> entries;
 
     public ReportFragment(DatabaseManager databaseManager, List<Data> data) {
         super(R.layout.fragment_report);
@@ -50,9 +51,10 @@ public class ReportFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        spinner = view.findViewById(R.id.report_options);
+        tabLayout = view.findViewById(R.id.report_tab_options);
         resultTextView = view.findViewById(R.id.report_result);
         pieChart = view.findViewById(R.id.report_pie_chart);
+        circularProgressIndicator = view.findViewById(R.id.data_progress);
 
         dataCostMap = new HashMap<>();
 
@@ -60,28 +62,23 @@ public class ReportFragment extends Fragment {
             dataCostMap.put(value.getID(), value.getCost());
         }
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.report_options, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        setPieChart();
 
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ReportOptions reportOption;
-                switch (position) {
-                    case 1 -> reportOption = ReportOptions.MONTH;
-                    case 2 -> reportOption = ReportOptions.YEAR;
-                    case 3 -> reportOption = ReportOptions.ALL;
-                    default -> reportOption = ReportOptions.WEEK;
-                }
-                records = databaseManager.getRecordsByDate(reportOption);
-                setUsage();
-                setPieChart();
+            public void onTabSelected(TabLayout.Tab tab) {
+                getRecords(tab.getPosition());
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onTabUnselected(TabLayout.Tab tab) {}
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                getRecords(tab.getPosition());
+            }
         });
+        tabLayout.selectTab(tabLayout.getTabAt(0));
     }
 
     private void setUsage() {
@@ -93,22 +90,13 @@ public class ReportFragment extends Fragment {
     }
 
     private void setPieChart() {
-        List<PieEntry> entries = new ArrayList<>();
         int[] colors = {
                 Color.parseColor("#FF004F"), Color.parseColor("#FC01D8"),
                 Color.parseColor("#FFFC00"), Color.parseColor("#D50014"),
                 Color.parseColor("#0866FF"), Color.parseColor("#1D9BF0"),
                 Color.parseColor("#A544FF"), Color.parseColor("#FF4500")
         };
-
-        for (Data value : data) {
-            float f = records.stream()
-                    .filter(record -> record.getIdOfData() == value.getID())
-                    .map((record) -> record.getQuantity() * dataCostMap.get(record.getIdOfData()))
-                    .reduce(0f, Float::sum);
-
-            entries.add(new PieEntry(f, value.getName()));
-        }
+        entries = new ArrayList<>();
 
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(colors);
@@ -122,6 +110,7 @@ public class ReportFragment extends Fragment {
         pieChart.setHoleRadius(40f);
         pieChart.setTransparentCircleRadius(0f);
         pieChart.setDrawEntryLabels(false);
+        pieChart.setHoleColor(Color.TRANSPARENT);
 
         Legend legend = pieChart.getLegend();
         legend.setTextSize(14f);
@@ -130,6 +119,35 @@ public class ReportFragment extends Fragment {
         legend.setTextColor(Color.LTGRAY);
 
         pieChart.setData(data);
+    }
+
+    private void setPieChartData() {
+        entries.clear();
+
+        for (Data value : data) {
+            float f = records.stream()
+                    .filter(record -> record.getIdOfData() == value.getID())
+                    .map((record) -> record.getQuantity() * dataCostMap.get(record.getIdOfData()))
+                    .reduce(0f, Float::sum);
+
+            entries.add(new PieEntry(f, value.getName()));
+        }
+        pieChart.notifyDataSetChanged();
         pieChart.invalidate();
+        circularProgressIndicator.setVisibility(View.GONE);
+    }
+
+    private void getRecords(int position) {
+        circularProgressIndicator.setVisibility(View.VISIBLE);
+        ReportOptions reportOption;
+        switch (position) {
+            case 1 -> reportOption = ReportOptions.MONTH;
+            case 2 -> reportOption = ReportOptions.YEAR;
+            case 3 -> reportOption = ReportOptions.ALL;
+            default -> reportOption = ReportOptions.WEEK;
+        }
+        records = databaseManager.getRecordsByDate(reportOption);
+        setUsage();
+        setPieChartData();
     }
 }
