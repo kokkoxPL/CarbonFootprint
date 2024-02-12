@@ -40,7 +40,9 @@ public class ReportFragment extends Fragment {
     private final List<Data> data;
     private List<Record> records;
     private Map<Integer, Float> dataCostMap;
+    private Map<Integer, Integer> colorsMap;
     private List<PieEntry> entries;
+    private List<Integer> colors;
 
     public ReportFragment(DatabaseManager databaseManager, List<Data> data) {
         super(R.layout.fragment_report);
@@ -57,9 +59,18 @@ public class ReportFragment extends Fragment {
         circularProgressIndicator = view.findViewById(R.id.data_progress);
 
         dataCostMap = new HashMap<>();
+        colorsMap = new HashMap<>();
+
+        int[] colors = {
+            Color.parseColor("#FF004F"), Color.parseColor("#FC01D8"),
+                    Color.parseColor("#FFFC00"), Color.parseColor("#D50014"),
+                    Color.parseColor("#0866FF"), Color.parseColor("#1D9BF0"),
+                    Color.parseColor("#A544FF"), Color.parseColor("#FF4500")
+        };
 
         for (Data value : data) {
             dataCostMap.put(value.getID(), value.getCost());
+            colorsMap.put(value.getID(), colors[value.getID() - 1]);
         }
 
         setPieChart();
@@ -90,12 +101,7 @@ public class ReportFragment extends Fragment {
     }
 
     private void setPieChart() {
-        int[] colors = {
-                Color.parseColor("#FF004F"), Color.parseColor("#FC01D8"),
-                Color.parseColor("#FFFC00"), Color.parseColor("#D50014"),
-                Color.parseColor("#0866FF"), Color.parseColor("#1D9BF0"),
-                Color.parseColor("#A544FF"), Color.parseColor("#FF4500")
-        };
+        colors = new ArrayList<>();
         entries = new ArrayList<>();
 
         PieDataSet dataSet = new PieDataSet(entries, "");
@@ -123,6 +129,7 @@ public class ReportFragment extends Fragment {
 
     private void setPieChartData() {
         entries.clear();
+        colors.clear();
 
         for (Data value : data) {
             float f = records.stream()
@@ -130,7 +137,10 @@ public class ReportFragment extends Fragment {
                     .map((record) -> record.getQuantity() * dataCostMap.get(record.getIdOfData()))
                     .reduce(0f, Float::sum);
 
-            entries.add(new PieEntry(f, value.getName()));
+            if (f > 0) {
+                entries.add(new PieEntry(f, value.getName()));
+                colors.add(colorsMap.get(value.getID()));
+            }
         }
         pieChart.notifyDataSetChanged();
         pieChart.invalidate();

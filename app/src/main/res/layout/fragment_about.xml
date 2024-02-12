@@ -24,7 +24,7 @@
             <LinearLayout
                 android:id="@+id/about_linear_layout"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp"
+                android:layout_height="60dp"
                 android:layout_marginTop="30dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -37,6 +37,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:layout_marginEnd="30dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
                     android:src="@drawable/facebook_logo"
@@ -48,20 +49,10 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:layout_marginStart="30dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
                     android:src="@drawable/instagram_logo"
-                    android:layout_marginHorizontal="10dp" />
-
-                <ImageButton
-                    android:id="@+id/about_social_media_3"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/tik_tok_logo"
                     android:layout_marginHorizontal="10dp" />
 
             </LinearLayout>
