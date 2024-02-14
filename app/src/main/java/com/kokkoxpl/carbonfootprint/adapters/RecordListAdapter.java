@@ -1,5 +1,7 @@
 package com.kokkoxpl.carbonfootprint.adapters;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -7,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,10 +26,13 @@ import java.util.Locale;
 public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.RecordViewHolder> {
     private final List<Data> data;
     private List<Record> records;
+    private final Context context;
 
-    public RecordListAdapter(List<Data> data, List<Record> records) {
+
+    public RecordListAdapter(List<Data> data, List<Record> records, Context context) {
         this.data = data;
         this.records = records;
+        this.context = context;
     }
 
     @NonNull
@@ -37,7 +43,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
 
     @Override
     public void onBindViewHolder(@NonNull RecordViewHolder viewHolder, final int position) {
-        viewHolder.bind(data.get(position), records.get(position));
+        viewHolder.bind(data.get(position), records.get(position), context);
     }
 
     public void setRecords(@NonNull List<Record> records) {
@@ -51,6 +57,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
     }
 
     public static class RecordViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView logoImageView;
         private final TextView nameTextView;
         private final TextView valueTextView;
         private final EditText quantityEditText;
@@ -59,6 +66,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
 
         public RecordViewHolder(View view) {
             super(view);
+            logoImageView = view.findViewById(R.id.record_row_data_logo);
             nameTextView = view.findViewById(R.id.record_row_data_name);
             valueTextView = view.findViewById(R.id.record_row_data_value);
             quantityEditText = view.findViewById(R.id.record_row_data_quantity);
@@ -67,10 +75,14 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
         }
 
 
-        public void bind(final Data item, Record record) {
+        public void bind(final Data item, Record record, Context context) {
             int changeValue = 15;
             nameTextView.setText(item.getName());
             valueTextView.setText(String.format(Locale.getDefault(),"%.2f", item.getCost()));
+
+            String uri = String.format("@drawable/%s_logo", item.getName().toLowerCase());
+            int imageResource = context.getResources().getIdentifier(uri, null, context.getPackageName());
+            logoImageView.setImageDrawable(context.getResources().getDrawable(imageResource, context.getTheme()));
 
             quantityEditText.setText(String.valueOf(record.getQuantity()));
 

@@ -63,9 +63,9 @@ public class ReportFragment extends Fragment {
 
         int[] colors = {
             Color.parseColor("#FF004F"), Color.parseColor("#FC01D8"),
-                    Color.parseColor("#FFFC00"), Color.parseColor("#D50014"),
-                    Color.parseColor("#0866FF"), Color.parseColor("#1D9BF0"),
-                    Color.parseColor("#A544FF"), Color.parseColor("#FF4500")
+            Color.parseColor("#FFFC00"), Color.parseColor("#D50014"),
+            Color.parseColor("#0866FF"), Color.parseColor("#1D9BF0"),
+            Color.parseColor("#A544FF"), Color.parseColor("#FF4500")
         };
 
         for (Data value : data) {
