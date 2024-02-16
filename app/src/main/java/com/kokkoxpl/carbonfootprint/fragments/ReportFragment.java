@@ -12,10 +12,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
 import com.kokkoxpl.carbonfootprint.R;
@@ -24,6 +26,7 @@ import com.kokkoxpl.carbonfootprint.data.Record;
 import com.kokkoxpl.carbonfootprint.data.db.DatabaseManager;
 import com.kokkoxpl.carbonfootprint.data.enums.ReportOptions;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -97,7 +100,7 @@ public class ReportFragment extends Fragment {
                 .map((record) -> record.getQuantity() * dataCostMap.get(record.getIdOfData()))
                 .reduce(0f, Float::sum);
 
-        resultTextView.setText(String.format(Locale.getDefault(),"%.2f", result));
+        resultTextView.setText(String.format(Locale.getDefault(),"%.2f g CO2e", result));
     }
 
     private void setPieChart() {
@@ -105,10 +108,16 @@ public class ReportFragment extends Fragment {
         entries = new ArrayList<>();
 
         PieDataSet dataSet = new PieDataSet(entries, "");
+        dataSet.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.format(Locale.getDefault(),"%.2f g", value);
+            }
+        });
         dataSet.setColors(colors);
-        dataSet.setValueTextSize(16f);
+        dataSet.setValueTextSize(12f);
         dataSet.setSliceSpace(2f);
-        dataSet.setValueTextColor(Color.WHITE);
+        dataSet.setValueTextColor(Color.BLACK);
 
         PieData data = new PieData(dataSet);
         pieChart.getDescription().setText("");
@@ -117,6 +126,8 @@ public class ReportFragment extends Fragment {
         pieChart.setTransparentCircleRadius(0f);
         pieChart.setDrawEntryLabels(false);
         pieChart.setHoleColor(Color.TRANSPARENT);
+        pieChart.setRotationEnabled(false);
+        pieChart.setTouchEnabled(false);
 
         Legend legend = pieChart.getLegend();
         legend.setTextSize(14f);

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="80dp"
     android:layout_marginVertical="10dp"
     android:elevation="8dp"
     android:background="@drawable/rounded_rectangle">
@@ -12,7 +12,7 @@
         android:id="@+id/record_row_data_logo"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:src="@drawable/reddit_logo"
         tools:src="@tools:sample/avatars" />
 
@@ -43,15 +43,22 @@
         app:tint="?colorAccent"
         android:src="@drawable/ic_minus_button" />
 
-    <EditText
-        android:id="@+id/record_row_data_quantity"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:inputType="number" />
+        app:prefixTextAppearance="@style/PrefixTextAppearance"
+        android:layout_weight="4">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextUsername"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="number"
+            android:textAlignment="textEnd"
+            android:textSize="14sp"
+            tools:text="@tools:sample/us_zipcodes" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <ImageButton
         android:id="@+id/record_row_plus_button"

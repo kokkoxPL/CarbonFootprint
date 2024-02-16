@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.CarbonFootprint" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-         <item name="colorPrimary">#046004</item>
+         <item name="colorPrimary">@color/dark_green</item>
     </style>
 
     <style name="Theme.CarbonFootprint" parent="Base.Theme.CarbonFootprint" />

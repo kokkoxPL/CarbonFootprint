@@ -5,4 +5,7 @@
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
     </style>
+    <style name="PrefixTextAppearance" parent="TextAppearance.Design.Prefix">
+        <item name="android:textSize">10sp</item>
+    </style>
 </resources>
