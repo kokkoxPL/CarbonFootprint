@@ -6,6 +6,6 @@
         <item name="colorAccent">@color/color_accent</item>
     </style>
     <style name="PrefixTextAppearance" parent="TextAppearance.Design.Prefix">
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 </resources>
