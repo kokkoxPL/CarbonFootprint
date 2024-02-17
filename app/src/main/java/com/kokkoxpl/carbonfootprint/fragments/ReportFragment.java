@@ -126,8 +126,6 @@ public class ReportFragment extends Fragment {
         pieChart.setTransparentCircleRadius(0f);
         pieChart.setDrawEntryLabels(false);
         pieChart.setHoleColor(Color.TRANSPARENT);
-        pieChart.setRotationEnabled(false);
-        pieChart.setTouchEnabled(false);
 
         Legend legend = pieChart.getLegend();
         legend.setTextSize(14f);

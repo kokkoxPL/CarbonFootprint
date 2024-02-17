@@ -3,13 +3,11 @@ package com.kokkoxpl.carbonfootprint.adapters;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +24,6 @@ import com.kokkoxpl.carbonfootprint.data.Record;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 
 public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.RecordViewHolder> {
@@ -63,36 +60,33 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
     }
 
     public static class RecordViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView logoImageView;
-        private final TextView nameTextView;
-        private final TextView valueTextView;
-//        private final EditText quantityEditText;
+        private final ImageView logo;
+        private final TextView name;
+        private final TextView value;
         private final ImageButton minusButton;
         private final ImageButton plusButton;
-        private final TextInputLayout textInputLayout;
-        private final TextInputEditText editTextUsername;
+        private final TextInputLayout quantityLayout;
+        private final TextInputEditText quantityText;
 
         public RecordViewHolder(View view) {
             super(view);
-            logoImageView = view.findViewById(R.id.record_row_data_logo);
-            nameTextView = view.findViewById(R.id.record_row_data_name);
-            valueTextView = view.findViewById(R.id.record_row_data_value);
-//            quantityEditText = view.findViewById(R.id.record_row_data_quantity);
+            logo = view.findViewById(R.id.record_row_data_logo);
+            name = view.findViewById(R.id.record_row_data_name);
+            value = view.findViewById(R.id.record_row_data_value);
             minusButton = view.findViewById(R.id.record_row_minus_button);
             plusButton = view.findViewById(R.id.record_row_plus_button);
-            textInputLayout = view.findViewById(R.id.textInputLayout);
-            editTextUsername = view.findViewById(R.id.editTextUsername);
+            quantityLayout = view.findViewById(R.id.textInputLayout);
+            quantityText = view.findViewById(R.id.editTextUsername);
         }
-
 
         public void bind(final Data item, Record record, Context context) {
             int changeValue = 15;
-            nameTextView.setText(item.getName());
-            valueTextView.setText(String.format(Locale.getDefault(),"%.2f", item.getCost()));
+            name.setText(item.getName());
+            value.setText(String.format(Locale.getDefault(),"%.2f", item.getCost()));
 
             String uri = String.format("@drawable/%s_logo", item.getName().toLowerCase());
             int imageResource = context.getResources().getIdentifier(uri, null, context.getPackageName());
-            logoImageView.setImageDrawable(context.getResources().getDrawable(imageResource, context.getTheme()));
+            logo.setImageDrawable(context.getResources().getDrawable(imageResource, context.getTheme()));
 
             plusButton.setOnClickListener(v -> {
                 setQuantityEditText(changeValue);
@@ -102,13 +96,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
                 setQuantityEditText(-changeValue);
             });
 
-            int quantity = record.getQuantity();
-
-            editTextUsername.setText(String.valueOf(quantity));
-            textInputLayout.setPrefixText(String.format("%s h\n%s min", quantity / 60, quantity % 60));
-            textInputLayout.setPrefixTextColor(ColorStateList.valueOf(Color.LTGRAY));
-
-            editTextUsername.addTextChangedListener(new TextWatcher() {
+            quantityText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -117,31 +105,31 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    String text = s.toString();
                     try {
-                        int value = Integer.parseUnsignedInt(text);
-
+                        int value = Integer.parseUnsignedInt(s.toString());
                         if (value > 1440) {
                             Toast.makeText(context, "W jednym dniu jest 1440 minut", Toast.LENGTH_SHORT).show();
-                            editTextUsername.setText("1440");
+                            quantityText.setText("1440");
                             return;
                         }
 
                         record.setQuantity(value);
-                        textInputLayout.setPrefixText(String.format("%s h\n%s min", value / 60, value % 60));
+                        quantityLayout.setPrefixText(String.format("%s h\n%s min", value / 60, value % 60));
                     } catch (NumberFormatException e) {
-                        editTextUsername.setText("0");
+                        quantityText.setText("0");
                     }
                 }
             });
+
+            quantityText.setText(String.valueOf(record.getQuantity()));
+            quantityLayout.setPrefixTextColor(ColorStateList.valueOf(Color.LTGRAY));
         }
 
         private void setQuantityEditText(int changeValue) {
             try {
-                int newValue = Integer.parseInt(editTextUsername.getText().toString()) + changeValue;
-                editTextUsername.setText(String.valueOf(newValue));
+                quantityText.setText(String.valueOf(Integer.parseUnsignedInt(quantityText.getText().toString()) + changeValue));
             } catch (NumberFormatException e) {
-                editTextUsername.setText("0");
+                quantityText.setText("0");
             }
         }
     }

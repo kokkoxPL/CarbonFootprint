@@ -64,6 +64,7 @@ public class HomeFragment extends Fragment {
         recordListAdapter = new RecordListAdapter(data, records, getContext());
         recyclerView.setAdapter(recordListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        recyclerView.setHasFixedSize(true);
 
         save.setOnClickListener(v -> {
             databaseManager.updateRecords(records);
