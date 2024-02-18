@@ -80,20 +80,18 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
         }
 
         public void bind(final Data item, Record record, Context context) {
-            int changeValue = 15;
+            final int CHANGE_VALUE = 15;
+
             name.setText(item.getName());
             value.setText(String.format(Locale.getDefault(),"%.2f", item.getCost()));
-
-            String uri = String.format("@drawable/%s_logo", item.getName().toLowerCase());
-            int imageResource = context.getResources().getIdentifier(uri, null, context.getPackageName());
-            logo.setImageDrawable(context.getResources().getDrawable(imageResource, context.getTheme()));
+            logo.setImageResource(context.getResources().getIdentifier(String.format("@drawable/%s_logo", item.getName().toLowerCase()), null, context.getPackageName()));
 
             plusButton.setOnClickListener(v -> {
-                setQuantityEditText(changeValue);
+                setQuantityEditText(CHANGE_VALUE);
             });
 
             minusButton.setOnClickListener(v -> {
-                setQuantityEditText(-changeValue);
+                setQuantityEditText(-CHANGE_VALUE);
             });
 
             quantityText.addTextChangedListener(new TextWatcher() {

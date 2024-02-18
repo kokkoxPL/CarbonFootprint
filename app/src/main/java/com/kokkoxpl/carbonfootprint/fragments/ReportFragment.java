@@ -6,28 +6,37 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.kokkoxpl.carbonfootprint.R;
 import com.kokkoxpl.carbonfootprint.data.Data;
 import com.kokkoxpl.carbonfootprint.data.Record;
 import com.kokkoxpl.carbonfootprint.data.db.DatabaseManager;
 import com.kokkoxpl.carbonfootprint.data.enums.ReportOptions;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -37,14 +46,13 @@ public class ReportFragment extends Fragment {
     private TabLayout tabLayout;
     private TextView resultTextView;
     private PieChart pieChart;
-    private CircularProgressIndicator circularProgressIndicator;
 
     private final DatabaseManager databaseManager;
     private final List<Data> data;
     private List<Record> records;
     private Map<Integer, Float> dataCostMap;
     private Map<Integer, Integer> colorsMap;
-    private List<PieEntry> entries;
+    private List<PieEntry> pieEntries;
     private List<Integer> colors;
 
     public ReportFragment(DatabaseManager databaseManager, List<Data> data) {
@@ -59,7 +67,6 @@ public class ReportFragment extends Fragment {
         tabLayout = view.findViewById(R.id.report_tab_options);
         resultTextView = view.findViewById(R.id.report_result);
         pieChart = view.findViewById(R.id.report_pie_chart);
-        circularProgressIndicator = view.findViewById(R.id.data_progress);
 
         dataCostMap = new HashMap<>();
         colorsMap = new HashMap<>();
@@ -95,6 +102,19 @@ public class ReportFragment extends Fragment {
         tabLayout.selectTab(tabLayout.getTabAt(0));
     }
 
+    private void getRecords(int position) {
+        ReportOptions reportOption;
+        switch (position) {
+            case 1 -> reportOption = ReportOptions.MONTH;
+            case 2 -> reportOption = ReportOptions.YEAR;
+            case 3 -> reportOption = ReportOptions.ALL;
+            default -> reportOption = ReportOptions.WEEK;
+        }
+        records = databaseManager.getRecordsByDate(reportOption);
+        setUsage();
+        setChartData();
+    }
+
     private void setUsage() {
         float result = records.stream()
                 .map((record) -> record.getQuantity() * dataCostMap.get(record.getIdOfData()))
@@ -105,9 +125,9 @@ public class ReportFragment extends Fragment {
 
     private void setPieChart() {
         colors = new ArrayList<>();
-        entries = new ArrayList<>();
+        pieEntries = new ArrayList<>();
 
-        PieDataSet dataSet = new PieDataSet(entries, "");
+        PieDataSet dataSet = new PieDataSet(pieEntries, "");
         dataSet.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
@@ -120,7 +140,7 @@ public class ReportFragment extends Fragment {
         dataSet.setValueTextColor(Color.BLACK);
 
         PieData data = new PieData(dataSet);
-        pieChart.getDescription().setText("");
+        pieChart.getDescription().setEnabled(false);
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleRadius(40f);
         pieChart.setTransparentCircleRadius(0f);
@@ -136,37 +156,22 @@ public class ReportFragment extends Fragment {
         pieChart.setData(data);
     }
 
-    private void setPieChartData() {
-        entries.clear();
+    private void setChartData() {
+        pieEntries.clear();
         colors.clear();
 
         for (Data value : data) {
-            float f = records.stream()
+            float val = records.stream()
                     .filter(record -> record.getIdOfData() == value.getID())
                     .map((record) -> record.getQuantity() * dataCostMap.get(record.getIdOfData()))
                     .reduce(0f, Float::sum);
 
-            if (f > 0) {
-                entries.add(new PieEntry(f, value.getName()));
+            if (val > 0) {
+                pieEntries.add(new PieEntry(val, value.getName()));
                 colors.add(colorsMap.get(value.getID()));
             }
         }
         pieChart.notifyDataSetChanged();
         pieChart.invalidate();
-        circularProgressIndicator.setVisibility(View.GONE);
-    }
-
-    private void getRecords(int position) {
-        circularProgressIndicator.setVisibility(View.VISIBLE);
-        ReportOptions reportOption;
-        switch (position) {
-            case 1 -> reportOption = ReportOptions.MONTH;
-            case 2 -> reportOption = ReportOptions.YEAR;
-            case 3 -> reportOption = ReportOptions.ALL;
-            default -> reportOption = ReportOptions.WEEK;
-        }
-        records = databaseManager.getRecordsByDate(reportOption);
-        setUsage();
-        setPieChartData();
     }
 }

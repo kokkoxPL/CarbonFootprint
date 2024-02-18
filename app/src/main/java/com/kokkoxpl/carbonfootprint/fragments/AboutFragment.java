@@ -29,5 +29,6 @@ public class AboutFragment extends Fragment {
 
         recyclerView.setAdapter(groupListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        recyclerView.setHasFixedSize(true);
     }
 }
