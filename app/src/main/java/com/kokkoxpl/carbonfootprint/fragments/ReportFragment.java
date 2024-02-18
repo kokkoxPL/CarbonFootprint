@@ -6,37 +6,24 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.kokkoxpl.carbonfootprint.R;
 import com.kokkoxpl.carbonfootprint.data.Data;
 import com.kokkoxpl.carbonfootprint.data.Record;
 import com.kokkoxpl.carbonfootprint.data.db.DatabaseManager;
-import com.kokkoxpl.carbonfootprint.data.enums.ReportOptions;
+import com.kokkoxpl.carbonfootprint.data.enums.ReportRecordDate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -103,14 +90,14 @@ public class ReportFragment extends Fragment {
     }
 
     private void getRecords(int position) {
-        ReportOptions reportOption;
+        ReportRecordDate reportRecordDate;
         switch (position) {
-            case 1 -> reportOption = ReportOptions.MONTH;
-            case 2 -> reportOption = ReportOptions.YEAR;
-            case 3 -> reportOption = ReportOptions.ALL;
-            default -> reportOption = ReportOptions.WEEK;
+            case 1 -> reportRecordDate = ReportRecordDate.MONTH;
+            case 2 -> reportRecordDate = ReportRecordDate.YEAR;
+            case 3 -> reportRecordDate = ReportRecordDate.ALL;
+            default -> reportRecordDate = ReportRecordDate.WEEK;
         }
-        records = databaseManager.getRecordsByDate(reportOption);
+        records = databaseManager.getRecordsByDate(reportRecordDate);
         setUsage();
         setChartData();
     }

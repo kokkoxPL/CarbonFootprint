@@ -41,7 +41,7 @@
                 android:text="@string/home_first_row_quantity"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="4"
+                android:layout_weight="5"
                 android:gravity="center"
                 android:textAlignment="center"
                 android:textSize="20sp" />
@@ -61,10 +61,10 @@
             android:id="@+id/home_record_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/home_save_records"
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            app:layout_constraintBottom_toTopOf="@+id/home_date_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider"
             android:layout_marginHorizontal="10dp"
             tools:listitem="@layout/record_row" >
 
@@ -72,14 +72,17 @@
 
         <Button
             android:id="@+id/home_save_records"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_rectangle"
             android:text="@string/home_save_records"
             android:textColor="@color/white"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:layout_marginHorizontal="@dimen/record_row_padding_horizontal"
+            android:layout_marginVertical="@dimen/record_row_padding_vertical"
             app:layout_constraintBottom_toTopOf="@+id/home_date_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <LinearLayout
             android:id="@+id/home_date_layout"

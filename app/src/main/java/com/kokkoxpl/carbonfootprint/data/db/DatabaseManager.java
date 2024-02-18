@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.kokkoxpl.carbonfootprint.data.Data;
 import com.kokkoxpl.carbonfootprint.data.Record;
-import com.kokkoxpl.carbonfootprint.data.enums.ReportOptions;
+import com.kokkoxpl.carbonfootprint.data.enums.ReportRecordDate;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -129,7 +129,7 @@ public class DatabaseManager {
         return records;
     }
 
-    public List<Record> getRecordsByDate(ReportOptions reportOption) {
+    public List<Record> getRecordsByDate(ReportRecordDate reportOption) {
         List<Record> records = new ArrayList<>();
 
         String selection = String.format("%s BETWEEN ? AND ?", RECORDS_DATE);
@@ -188,10 +188,10 @@ public class DatabaseManager {
         }
     }
 
-    private String[] getSelectionArgs(ReportOptions reportOption) {
+    private String[] getSelectionArgs(ReportRecordDate reportRecordDate) {
         LocalDate currentDate = LocalDate.now();
 
-        return switch (reportOption) {
+        return switch (reportRecordDate) {
             case WEEK -> new String[] {currentDate.minusWeeks(1).plusDays(1).toString(), currentDate.toString()};
             case MONTH -> new String[] {currentDate.minusMonths(1).plusDays(1).toString(), currentDate.toString()};
             case YEAR -> new String[] {currentDate.minusYears(1).plusDays(1).toString(), currentDate.toString()};

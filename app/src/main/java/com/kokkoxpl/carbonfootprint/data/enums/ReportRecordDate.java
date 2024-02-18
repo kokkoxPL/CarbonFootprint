@@ -1,6 +1,6 @@
 package com.kokkoxpl.carbonfootprint.data.enums;
 
-public enum ReportOptions {
+public enum ReportRecordDate {
     WEEK,
     MONTH,
     YEAR,
