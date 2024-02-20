@@ -21,7 +21,7 @@ public class DatabaseManager {
     public static final int DB_VERSION = 2;
     public final String ID = "id";
 
-    public final String DATA_TABLE = "data";
+    public final String DATA_TABLE = "data_values";
     public final String DATA_NAME = "name";
     public final String DATA_COST = "cost";
 
