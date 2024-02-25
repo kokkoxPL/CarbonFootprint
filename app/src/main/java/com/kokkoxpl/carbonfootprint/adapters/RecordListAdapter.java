@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,22 +20,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.kokkoxpl.carbonfootprint.R;
-import com.kokkoxpl.carbonfootprint.data.Data;
-import com.kokkoxpl.carbonfootprint.data.Record;
+import com.kokkoxpl.carbonfootprint.data.db.entities.DataRecord;
+import com.kokkoxpl.carbonfootprint.data.db.entities.DataValue;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 
 public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.RecordViewHolder> {
-    private final List<Data> data;
-    private List<Record> records;
+    private final List<DataValue> dataValues;
+    private List<DataRecord> dataRecords;
     private final Context context;
 
 
-    public RecordListAdapter(List<Data> data, List<Record> records, Context context) {
-        this.data = data;
-        this.records = records;
+    public RecordListAdapter(List<DataValue> dataValues, List<DataRecord> dataRecords, Context context) {
+        this.dataValues = dataValues;
+        this.dataRecords = dataRecords;
         this.context = context;
     }
 
@@ -46,17 +51,24 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
 
     @Override
     public void onBindViewHolder(@NonNull RecordViewHolder viewHolder, final int position) {
-        viewHolder.bind(data.get(position), records.get(position), context);
+//        DataRecord dataRecord = dataRecords.stream().filter(record -> record.getIdOfData() == dataValues.get(position).getId()).findFirst().orElse(null);
+//        DataValue dataValue = dataValues.get(position);
+//        DataRecord dataRecord = dataRecordMap
+//                .getOrDefault(dataValue.getId(),
+//                        new DataRecord(dataValue.getId(), 0,
+//                                DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now())));
+//        dataRecords.add(dataRecord);
+        viewHolder.bind(dataValues.get(position), dataRecords.get(position), context);
     }
 
-    public void setRecords(@NonNull List<Record> records) {
-        this.records = records;
+    public void setRecords(@NonNull List<DataRecord> records) {
+        this.dataRecords = records;
         notifyItemRangeChanged(0, getItemCount());
     }
 
     @Override
     public int getItemCount() {
-        return records.size();
+        return dataRecords.size();
     }
 
     public static class RecordViewHolder extends RecyclerView.ViewHolder {
@@ -79,12 +91,12 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
             quantityText = view.findViewById(R.id.editTextUsername);
         }
 
-        public void bind(final Data item, Record record, Context context) {
+        public void bind(final DataValue dataValue, DataRecord dataRecord, Context context) {
             final int CHANGE_VALUE = 15;
 
-            name.setText(item.getName());
-            value.setText(String.format(Locale.getDefault(),"%.2f", item.getCost()));
-            logo.setImageResource(context.getResources().getIdentifier(String.format("@drawable/%s_logo", item.getName().toLowerCase()), null, context.getPackageName()));
+            name.setText(dataValue.getName());
+            value.setText(String.format(Locale.getDefault(),"%.2f", dataValue.getCost()));
+            logo.setImageResource(context.getResources().getIdentifier(String.format("@drawable/%s_logo", dataValue.getName().toLowerCase()), null, context.getPackageName()));
 
             plusButton.setOnClickListener(v -> {
                 setQuantityEditText(CHANGE_VALUE);
@@ -111,7 +123,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
                             return;
                         }
 
-                        record.setQuantity(value);
+                        dataRecord.setQuantity(value);
                         quantityLayout.setPrefixText(String.format("%s h\n%s min", value / 60, value % 60));
                     } catch (NumberFormatException e) {
                         quantityText.setText("0");
@@ -119,7 +131,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
                 }
             });
 
-            quantityText.setText(String.valueOf(record.getQuantity()));
+            quantityText.setText(String.valueOf(dataRecord.getQuantity()));
             quantityLayout.setPrefixTextColor(ColorStateList.valueOf(Color.LTGRAY));
         }
 

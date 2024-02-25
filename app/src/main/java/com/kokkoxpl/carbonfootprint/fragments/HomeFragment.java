@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -16,14 +17,18 @@ import android.widget.TextView;
 
 import com.kokkoxpl.carbonfootprint.R;
 import com.kokkoxpl.carbonfootprint.adapters.RecordListAdapter;
-import com.kokkoxpl.carbonfootprint.data.Data;
-import com.kokkoxpl.carbonfootprint.data.Record;
-import com.kokkoxpl.carbonfootprint.data.db.DatabaseManager;
+import com.kokkoxpl.carbonfootprint.data.db.AppDatabase;
+import com.kokkoxpl.carbonfootprint.data.db.entities.DataRecord;
+import com.kokkoxpl.carbonfootprint.data.db.entities.DataValue;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HomeFragment extends Fragment {
     private TextView dateTextView;
@@ -33,16 +38,17 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     CalendarView calendarView;
 
-    private final DatabaseManager databaseManager;
+    private final AppDatabase appDatabase;
     private RecordListAdapter recordListAdapter;
     private LocalDate currentDate;
-    private final List<Data> data;
-    private List<Record> records;
+    private final List<DataValue> dataValues;
+    private List<DataRecord> dataRecords;
+    private Map<Integer, DataRecord> dataRecordsMap;
 
-    public HomeFragment(DatabaseManager databaseManager, List<Data> data) {
+    public HomeFragment(AppDatabase appDatabase, List<DataValue> dataValues) {
         super(R.layout.fragment_home);
-        this.databaseManager = databaseManager;
-        this.data = data;
+        this.appDatabase = appDatabase;
+        this.dataValues = dataValues;
     }
 
     @Override
@@ -56,18 +62,21 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.home_record_list);
         calendarView = view.findViewById(R.id.home_calendar);
 
+        dataRecords = new ArrayList<>();
+        dataRecordsMap = new HashMap<>();
+
         calendarView.setVisibility(View.GONE);
 
         currentDate = LocalDate.now();
         setNewDate();
 
-        recordListAdapter = new RecordListAdapter(data, records, getContext());
+        recordListAdapter = new RecordListAdapter(dataValues, dataRecords, getContext());
         recyclerView.setAdapter(recordListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
         save.setOnClickListener(v -> {
-            databaseManager.updateRecords(records);
+            appDatabase.recordDao().updateRecords(dataRecords);
         });
 
         prev.setOnClickListener(v -> {
@@ -92,16 +101,27 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    public void changeDate(int days) {
+    private void changeDate(int days) {
         currentDate = currentDate.plusDays(days);
         calendarView.setDate(currentDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli());
         setNewDate();
-        recordListAdapter.setRecords(records);
+        recordListAdapter.setRecords(dataRecords);
     }
 
-    public void setNewDate() {
+
+    private void setNewDate() {
         String newDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(currentDate);
         dateTextView.setText(newDate);
-        records = databaseManager.getRecords(newDate);
+
+        dataRecordsMap = appDatabase.recordDao().getRecordsMapByDate(newDate);
+
+        dataRecords.clear();
+        for (DataValue dataValue : dataValues) {
+            DataRecord dataRecord = dataRecordsMap.get(dataValue.getId());
+            if (dataRecord == null) {
+                dataRecord = new DataRecord(dataValue.getId(), 0, newDate);
+            }
+            dataRecords.add(dataRecord);
+        }
     }
 }

@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,13 +17,14 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.tabs.TabLayout;
 import com.kokkoxpl.carbonfootprint.R;
-import com.kokkoxpl.carbonfootprint.data.Data;
-import com.kokkoxpl.carbonfootprint.data.Record;
-import com.kokkoxpl.carbonfootprint.data.db.DatabaseManager;
-import com.kokkoxpl.carbonfootprint.data.enums.ReportRecordDate;
+import com.kokkoxpl.carbonfootprint.data.db.AppDatabase;
+import com.kokkoxpl.carbonfootprint.data.db.entities.DataRecord;
+import com.kokkoxpl.carbonfootprint.data.db.entities.DataValue;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,18 +36,13 @@ public class ReportFragment extends Fragment {
     private TextView resultTextView;
     private PieChart pieChart;
 
-    private final DatabaseManager databaseManager;
-    private final List<Data> data;
-    private List<Record> records;
-    private Map<Integer, Float> dataCostMap;
-    private Map<Integer, Integer> colorsMap;
+    private final AppDatabase appDatabase;
+    private Map<String, Float> dataRecordsCostMap;
     private List<PieEntry> pieEntries;
-    private List<Integer> colors;
 
-    public ReportFragment(DatabaseManager databaseManager, List<Data> data) {
+    public ReportFragment(AppDatabase appDatabase) {
         super(R.layout.fragment_report);
-        this.databaseManager = databaseManager;
-        this.data = data;
+        this.appDatabase = appDatabase;
     }
 
     @Override
@@ -54,21 +51,6 @@ public class ReportFragment extends Fragment {
         tabLayout = view.findViewById(R.id.report_tab_options);
         resultTextView = view.findViewById(R.id.report_result);
         pieChart = view.findViewById(R.id.report_pie_chart);
-
-        dataCostMap = new HashMap<>();
-        colorsMap = new HashMap<>();
-
-        int[] colors = {
-            Color.parseColor("#FF004F"), Color.parseColor("#FC01D8"),
-            Color.parseColor("#FFFC00"), Color.parseColor("#D50014"),
-            Color.parseColor("#0866FF"), Color.parseColor("#1D9BF0"),
-            Color.parseColor("#A544FF"), Color.parseColor("#FF4500")
-        };
-
-        for (Data value : data) {
-            dataCostMap.put(value.getID(), value.getCost());
-            colorsMap.put(value.getID(), colors[value.getID() - 1]);
-        }
 
         setPieChart();
 
@@ -90,29 +72,38 @@ public class ReportFragment extends Fragment {
     }
 
     private void getRecords(int position) {
-        ReportRecordDate reportRecordDate;
+        LocalDate currentDate = LocalDate.now();
+        String fromDate;
+        String toDate = currentDate.toString();
+
         switch (position) {
-            case 1 -> reportRecordDate = ReportRecordDate.MONTH;
-            case 2 -> reportRecordDate = ReportRecordDate.YEAR;
-            case 3 -> reportRecordDate = ReportRecordDate.ALL;
-            default -> reportRecordDate = ReportRecordDate.WEEK;
+            // WEEK
+            case 0 -> fromDate = currentDate.minusWeeks(1).plusDays(1).toString();
+            // MONTH
+            case 1 -> fromDate = currentDate.minusMonths(1).plusDays(1).toString();
+            // YEAR
+            case 2 -> fromDate = currentDate.minusYears(1).plusDays(1).toString();
+            // ALL
+            default -> fromDate = LocalDate.ofEpochDay(0).toString();
         }
-        records = databaseManager.getRecordsByDate(reportRecordDate);
+        dataRecordsCostMap = appDatabase.recordDao().getRecordsMapByDateRange(fromDate, toDate);
         setUsage();
         setChartData();
     }
 
     private void setUsage() {
-        float result = records.stream()
-                .map((record) -> record.getQuantity() * dataCostMap.get(record.getIdOfData()))
-                .reduce(0f, Float::sum);
-
+        float result = dataRecordsCostMap.values().stream().reduce(0f, Float::sum);
         resultTextView.setText(String.format(Locale.getDefault(),"%.2f g CO2e", result));
     }
 
     private void setPieChart() {
-        colors = new ArrayList<>();
         pieEntries = new ArrayList<>();
+        int[] colors = {
+                Color.parseColor("#FF004F"), Color.parseColor("#FC01D8"),
+                Color.parseColor("#FFFC00"), Color.parseColor("#D50014"),
+                Color.parseColor("#0866FF"), Color.parseColor("#1D9BF0"),
+                Color.parseColor("#A544FF"), Color.parseColor("#FF4500")
+        };
 
         PieDataSet dataSet = new PieDataSet(pieEntries, "");
         dataSet.setValueFormatter(new ValueFormatter() {
@@ -145,19 +136,15 @@ public class ReportFragment extends Fragment {
 
     private void setChartData() {
         pieEntries.clear();
-        colors.clear();
 
-        for (Data value : data) {
-            float val = records.stream()
-                    .filter(record -> record.getIdOfData() == value.getID())
-                    .map((record) -> record.getQuantity() * dataCostMap.get(record.getIdOfData()))
-                    .reduce(0f, Float::sum);
+        for (var dataRecordsCostMap : dataRecordsCostMap.entrySet()) {
+            float val = dataRecordsCostMap.getValue();
 
             if (val > 0) {
-                pieEntries.add(new PieEntry(val, value.getName()));
-                colors.add(colorsMap.get(value.getID()));
+                pieEntries.add(new PieEntry(val, dataRecordsCostMap.getKey()));
             }
         }
+
         pieChart.notifyDataSetChanged();
         pieChart.invalidate();
     }

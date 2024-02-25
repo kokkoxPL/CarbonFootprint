@@ -10,9 +10,6 @@ import java.util.List;
 
 @Dao
 public interface DataValueDao {
-    @Insert
-    void insertApps(DataValue... dataValues);
-
     @Query("SELECT * FROM data_values")
     List<DataValue> getApps();
 }
