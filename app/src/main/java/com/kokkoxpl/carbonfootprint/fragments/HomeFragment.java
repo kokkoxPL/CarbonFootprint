@@ -34,7 +34,7 @@ public class HomeFragment extends Fragment {
     private TextView dateTextView;
     private ImageButton prev;
     private ImageButton next;
-    private Button save;
+    private ImageButton save;
     private RecyclerView recyclerView;
     CalendarView calendarView;
 

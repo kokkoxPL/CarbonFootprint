@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="30dp"
-            android:layout_marginHorizontal="@dimen/record_row_padding_horizontal"
+            android:paddingHorizontal="@dimen/record_row_padding_horizontal"
             android:orientation="vertical" >
 
             <TextView

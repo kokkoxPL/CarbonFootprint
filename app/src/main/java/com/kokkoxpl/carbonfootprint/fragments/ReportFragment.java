@@ -99,10 +99,10 @@ public class ReportFragment extends Fragment {
     private void setPieChart() {
         pieEntries = new ArrayList<>();
         int[] colors = {
-                Color.parseColor("#FF004F"), Color.parseColor("#FC01D8"),
-                Color.parseColor("#FFFC00"), Color.parseColor("#D50014"),
-                Color.parseColor("#0866FF"), Color.parseColor("#1D9BF0"),
-                Color.parseColor("#A544FF"), Color.parseColor("#FF4500")
+                Color.parseColor("#e60049"), Color.parseColor("#0bb4ff"),
+                Color.parseColor("#ffa300"), Color.parseColor("#b3d4ff"),
+                Color.parseColor("#9b19f5"), Color.parseColor("#00bfa0"),
+                Color.parseColor("#dc0ab4"), Color.parseColor("#e6d800")
         };
 
         PieDataSet dataSet = new PieDataSet(pieEntries, "");
