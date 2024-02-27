@@ -2,6 +2,9 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.CarbonFootprint" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <item name="colorPrimary">@color/dark_green</item>
+        <item name="colorPrimary">@color/green_dark</item>
+        <item name="colorPrimaryVariant">@color/green_variant_light</item>
+        <item name="colorPrimaryContainer">@color/blue_dark</item>
+        <item name="android:statusBarColor">@color/status_bar</item>
     </style>
 </resources>

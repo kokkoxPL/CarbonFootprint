@@ -7,7 +7,7 @@
     android:layout_marginVertical="10dp"
     android:layout_marginHorizontal="10dp"
     app:cardCornerRadius="24dp"
-    app:cardBackgroundColor="@color/dark_gray"
+    app:cardBackgroundColor="?colorPrimary"
     app:cardElevation="8dp" >
 
     <LinearLayout
@@ -62,17 +62,18 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:prefixTextAppearance="@style/PrefixTextAppearance"
         android:layout_weight="2">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextUsername"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:inputType="number"
             android:textAlignment="textEnd"
             android:textSize="14sp"
+            android:hint="1h 15min"
             tools:text="@tools:sample/us_zipcodes" />
 
     </com.google.android.material.textfield.TextInputLayout>

@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.color.DynamicColors;
 import com.kokkoxpl.carbonfootprint.data.db.AppDatabase;
 import com.kokkoxpl.carbonfootprint.data.db.entities.DataValue;
 import com.kokkoxpl.carbonfootprint.fragments.AboutFragment;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        DynamicColors.applyToActivitiesIfAvailable(getApplication());
         appDatabase = AppDatabase.newInstance(this);
 
         dataValues = appDatabase.appDao().getApps();

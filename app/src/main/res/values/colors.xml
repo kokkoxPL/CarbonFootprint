@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+    <color name="black">#000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="dark_gray">#1D1D1D</color>
-    <color name="dark_green">#046004</color>
+    <color name="gray_dark">#1D1D1D</color>
+    <color name="status_bar">#121212</color>
+    <color name="green">#3CB043</color>
+    <color name="green_dark">#0B6623</color>
+    <color name="blue">#007FFF</color>
+    <color name="blue_dark">#002E88</color>
+    <color name="green_variant">#77FF94</color>
+    <color name="green_variant_light">#9BFDB0</color>
+<!--    <color name="green_variant_opaque">#77FF94</color>-->
+<!--    <color name="green_variant_light_opaque">#9BFDB0</color>-->
+
 
     <color name="color_primary">#FF6200EE</color>
     <color name="color_primary_dark">#FF3700B3</color>

@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -25,7 +24,6 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,7 +105,6 @@ public class HomeFragment extends Fragment {
         setNewDate();
         recordListAdapter.setRecords(dataRecords);
     }
-
 
     private void setNewDate() {
         String newDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(currentDate);
