@@ -51,13 +51,6 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
 
     @Override
     public void onBindViewHolder(@NonNull RecordViewHolder viewHolder, final int position) {
-//        DataRecord dataRecord = dataRecords.stream().filter(record -> record.getIdOfData() == dataValues.get(position).getId()).findFirst().orElse(null);
-//        DataValue dataValue = dataValues.get(position);
-//        DataRecord dataRecord = dataRecordMap
-//                .getOrDefault(dataValue.getId(),
-//                        new DataRecord(dataValue.getId(), 0,
-//                                DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now())));
-//        dataRecords.add(dataRecord);
         viewHolder.bind(dataValues.get(position), dataRecords.get(position), context);
     }
 
@@ -96,7 +89,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
 
             name.setText(dataValue.getName());
             value.setText(String.format(Locale.getDefault(),"%.2f", dataValue.getCost()));
-            logo.setImageResource(context.getResources().getIdentifier(String.format("@drawable/%s_logo", dataValue.getName().toLowerCase()), null, context.getPackageName()));
+            logo.setImageResource(context.getResources().getIdentifier(String.format("@drawable/logo_%s", dataValue.getName().toLowerCase()), null, context.getPackageName()));
 
             plusButton.setOnClickListener(v -> {
                 setQuantityEditText(CHANGE_VALUE);
@@ -124,7 +117,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
                         }
 
                         dataRecord.setQuantity(value);
-                        quantityLayout.setPrefixText(String.format("%s h\n%s min", value / 60, value % 60));
+                        quantityLayout.setHint(String.format("%s h %s min", value / 60, value % 60));
                     } catch (NumberFormatException e) {
                         quantityText.setText("0");
                     }

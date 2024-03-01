@@ -23,9 +23,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        DynamicColors.applyToActivitiesIfAvailable(getApplication());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DynamicColors.applyToActivitiesIfAvailable(getApplication());
         appDatabase = AppDatabase.newInstance(this);
 
         dataValues = appDatabase.appDao().getApps();

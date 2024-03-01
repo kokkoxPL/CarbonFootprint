@@ -40,7 +40,7 @@
                     android:layout_marginEnd="30dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    android:src="@drawable/facebook_logo"
+                    android:src="@drawable/logo_facebook"
                     android:layout_marginHorizontal="10dp" />
 
                 <ImageButton
@@ -52,7 +52,7 @@
                     android:layout_marginStart="30dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    android:src="@drawable/instagram_logo"
+                    android:src="@drawable/logo_instagram"
                     android:layout_marginHorizontal="10dp" />
 
             </LinearLayout>

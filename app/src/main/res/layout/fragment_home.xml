@@ -74,9 +74,10 @@
             android:paddingBottom="50dp"
             tools:listitem="@layout/record_row" >
 
+
         </androidx.recyclerview.widget.RecyclerView>
 
-        <ImageButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/home_save_records"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,6 +85,7 @@
             android:src="@drawable/ic_save_button"
             android:textColor="@color/white"
             android:padding="20dp"
+            android:clickable="true"
             android:layout_marginHorizontal="@dimen/record_row_padding_horizontal"
             android:layout_marginVertical="@dimen/record_row_padding_vertical"
             app:layout_constraintBottom_toTopOf="@+id/home_date_layout"
