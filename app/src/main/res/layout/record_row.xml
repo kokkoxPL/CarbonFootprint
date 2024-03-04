@@ -7,8 +7,8 @@
     android:layout_marginVertical="10dp"
     android:layout_marginHorizontal="10dp"
     app:cardCornerRadius="24dp"
-    app:strokeColor="?colorPrimary"
-    app:cardBackgroundColor="?colorSurfaceContainerLowest"
+    app:strokeColor="?colorOutline"
+    app:cardBackgroundColor="?colorPrimaryContainer"
     app:cardElevation="8dp" >
 
     <LinearLayout
@@ -57,6 +57,7 @@
         android:layout_weight="1.5"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="@dimen/record_row_padding_horizontal"
+        app:tint="?colorOnSurface"
         android:src="@drawable/ic_minus_button" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -83,6 +84,7 @@
         android:layout_weight="1.5"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="@dimen/record_row_padding_horizontal"
+        app:tint="?colorOnSurface"
         android:src="@drawable/ic_plus_button" />
 
     </LinearLayout>

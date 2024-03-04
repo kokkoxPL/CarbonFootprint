@@ -1,5 +1,7 @@
 package com.kokkoxpl.carbonfootprint.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -36,10 +38,10 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     CalendarView calendarView;
 
-    private final AppDatabase appDatabase;
+    private AppDatabase appDatabase;
     private RecordListAdapter recordListAdapter;
     private LocalDate currentDate;
-    private final List<DataValue> dataValues;
+    private List<DataValue> dataValues;
     private List<DataRecord> dataRecords;
     private Map<Integer, DataRecord> dataRecordsMap;
 
