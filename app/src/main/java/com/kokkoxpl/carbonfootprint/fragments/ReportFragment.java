@@ -17,12 +17,9 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.tabs.TabLayout;
 import com.kokkoxpl.carbonfootprint.R;
 import com.kokkoxpl.carbonfootprint.data.db.AppDatabase;
-import com.kokkoxpl.carbonfootprint.data.db.entities.DataRecord;
-import com.kokkoxpl.carbonfootprint.data.db.entities.DataValue;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,13 +33,12 @@ public class ReportFragment extends Fragment {
     private TextView resultTextView;
     private PieChart pieChart;
 
-    private final AppDatabase appDatabase;
+    private AppDatabase appDatabase;
     private Map<String, Float> dataRecordsCostMap;
     private List<PieEntry> pieEntries;
 
-    public ReportFragment(AppDatabase appDatabase) {
+    public ReportFragment() {
         super(R.layout.fragment_report);
-        this.appDatabase = appDatabase;
     }
 
     @Override
@@ -51,6 +47,8 @@ public class ReportFragment extends Fragment {
         tabLayout = view.findViewById(R.id.report_tab_options);
         resultTextView = view.findViewById(R.id.report_result);
         pieChart = view.findViewById(R.id.report_pie_chart);
+
+        appDatabase = AppDatabase.newInstance(getContext());
 
         setPieChart();
 

@@ -1,7 +1,5 @@
 package com.kokkoxpl.carbonfootprint.fragments;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -45,15 +43,17 @@ public class HomeFragment extends Fragment {
     private List<DataRecord> dataRecords;
     private Map<Integer, DataRecord> dataRecordsMap;
 
-    public HomeFragment(AppDatabase appDatabase, List<DataValue> dataValues) {
+    public HomeFragment() {
         super(R.layout.fragment_home);
-        this.appDatabase = appDatabase;
-        this.dataValues = dataValues;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        appDatabase = AppDatabase.newInstance(getContext());
+
+        dataValues = appDatabase.appDao().getApps();
 
         dateTextView = view.findViewById(R.id.home_current_date);
         prev = view.findViewById(R.id.home_previous_day);

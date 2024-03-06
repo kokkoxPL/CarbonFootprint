@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Base.Theme.CarbonFootprint" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/material_dynamic_primary70</item>
+        <item name="colorPrimaryVariant">@color/material_dynamic_primary60</item>
+        <item name="colorOnPrimary">@color/material_dynamic_primary100</item>
+        <item name="colorPrimaryContainer">@color/material_dynamic_primary90</item>
+        <item name="colorOnPrimaryContainer">@color/material_dynamic_primary10</item>
+
+        <item name="colorSurface">@color/material_dynamic_neutral_variant99</item>
+        <item name="colorOnSurface">@color/material_dynamic_neutral10</item>
+        <item name="colorSurfaceVariant">@color/material_dynamic_neutral_variant90</item>
+        <item name="colorOnSurfaceVariant">@color/material_dynamic_neutral_variant30</item>
+        <item name="colorSurfaceContainerLow">@color/material_dynamic_neutral90</item>
+        <item name="android:statusBarColor">@color/status_bar</item>
+    </style>
+</resources>

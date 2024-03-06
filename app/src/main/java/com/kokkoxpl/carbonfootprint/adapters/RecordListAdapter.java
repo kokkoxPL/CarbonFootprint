@@ -23,12 +23,8 @@ import com.kokkoxpl.carbonfootprint.R;
 import com.kokkoxpl.carbonfootprint.data.db.entities.DataRecord;
 import com.kokkoxpl.carbonfootprint.data.db.entities.DataValue;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 
 public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.RecordViewHolder> {
