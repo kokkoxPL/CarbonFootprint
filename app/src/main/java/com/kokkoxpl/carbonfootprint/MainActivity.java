@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.color.DynamicColors;
 import com.kokkoxpl.carbonfootprint.data.db.AppDatabase;
 import com.kokkoxpl.carbonfootprint.data.db.entities.DataValue;
 import com.kokkoxpl.carbonfootprint.fragments.AboutFragment;
@@ -15,9 +14,6 @@ import com.kokkoxpl.carbonfootprint.fragments.ReportFragment;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private AppDatabase appDatabase;
-    private List<DataValue> dataValues;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
-        bottomNavigationView.setSelectedItemId(R.id.menu_home);
+        bottomNavigationView.setSelectedItemId(R.id.menu_report);
     }
 
     private void replaceFragment (Fragment fragment){

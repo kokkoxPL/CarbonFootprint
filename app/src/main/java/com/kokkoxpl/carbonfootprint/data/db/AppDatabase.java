@@ -17,14 +17,17 @@ import com.kokkoxpl.carbonfootprint.data.db.entities.DataRecord;
 )
 
 public abstract class AppDatabase extends RoomDatabase {
-    public abstract DataValueDao appDao();
-    public abstract DataRecordDao recordDao();
+    private volatile static AppDatabase instance = null;
+    public abstract DataValueDao dataValueDao();
+    public abstract DataRecordDao dataRecordDao();
 
-    public static AppDatabase newInstance(Context context) {
-        return Room.databaseBuilder(context, AppDatabase.class, "data.db")
-                .createFromAsset("db_template.db")
-                .allowMainThreadQueries()
-                .fallbackToDestructiveMigration()
-                .build();
+    public static synchronized AppDatabase newInstance(Context context) {
+        if (instance == null) {
+            instance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "data.db")
+                    .allowMainThreadQueries()
+                    .createFromAsset("db_template.db")
+                    .build();
+        }
+        return instance;
     }
 }

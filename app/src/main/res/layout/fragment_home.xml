@@ -75,7 +75,6 @@
             android:clipToPadding="false"
             android:paddingTop="10dp"
             android:paddingBottom="50dp"
-            android:background="?colorSurface"
             tools:listitem="@layout/record_row" >
 
         </androidx.recyclerview.widget.RecyclerView>

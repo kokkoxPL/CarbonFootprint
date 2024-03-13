@@ -70,6 +70,21 @@
                 android:layout_marginTop="30dp"
                 android:layout_gravity="center" />
 
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/report_bar_chart"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginTop="20dp" />
+
+            <TextView
+                android:id="@+id/report_report_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/report_report_3"
+                android:textSize="20sp"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center" />
+
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/report_pie_chart"
                 android:layout_width="match_parent"

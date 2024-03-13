@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,9 +82,9 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
         public void bind(final DataValue dataValue, DataRecord dataRecord, Context context) {
             final int CHANGE_VALUE = 15;
 
-            name.setText(dataValue.getName());
-            value.setText(String.format(Locale.getDefault(),"%.2f", dataValue.getCost()));
-            logo.setImageResource(context.getResources().getIdentifier(String.format("@drawable/logo_%s", dataValue.getName().toLowerCase()), null, context.getPackageName()));
+            name.setText(dataValue.name());
+            value.setText(String.format(Locale.getDefault(),"%.2f", dataValue.cost()));
+            logo.setImageResource(context.getResources().getIdentifier(String.format("@drawable/logo_%s", dataValue.name().toLowerCase()), null, context.getPackageName()));
 
             plusButton.setOnClickListener(v -> {
                 setQuantityEditText(CHANGE_VALUE);

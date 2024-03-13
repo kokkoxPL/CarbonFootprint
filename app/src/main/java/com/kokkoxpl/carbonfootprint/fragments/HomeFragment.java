@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.ImageButton;
@@ -53,7 +52,7 @@ public class HomeFragment extends Fragment {
 
         appDatabase = AppDatabase.newInstance(getContext());
 
-        dataValues = appDatabase.appDao().getApps();
+        dataValues = appDatabase.dataValueDao().getApps();
 
         dateTextView = view.findViewById(R.id.home_current_date);
         prev = view.findViewById(R.id.home_previous_day);
@@ -76,7 +75,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         save.setOnClickListener(v -> {
-            appDatabase.recordDao().updateRecords(dataRecords);
+            appDatabase.dataRecordDao().updateRecords(dataRecords);
         });
 
         prev.setOnClickListener(v -> {
@@ -112,13 +111,13 @@ public class HomeFragment extends Fragment {
         String newDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(currentDate);
         dateTextView.setText(newDate);
 
-        dataRecordsMap = appDatabase.recordDao().getRecordsMapByDate(newDate);
+        dataRecordsMap = appDatabase.dataRecordDao().getRecordsMapByDate(newDate);
 
         dataRecords.clear();
         for (DataValue dataValue : dataValues) {
-            DataRecord dataRecord = dataRecordsMap.get(dataValue.getId());
+            DataRecord dataRecord = dataRecordsMap.get(dataValue.id());
             if (dataRecord == null) {
-                dataRecord = new DataRecord(dataValue.getId(), 0, newDate);
+                dataRecord = new DataRecord(dataValue.id(), 0, newDate);
             }
             dataRecords.add(dataRecord);
         }

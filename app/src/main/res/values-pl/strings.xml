@@ -11,7 +11,8 @@
 
     <!-- Report -->
     <string name="report_report_1">Twoje całkowite zużycie:</string>
-    <string name="report_report_2">Zużycie przez aplikacje:</string>
+    <string name="report_report_2">Zużycie</string>
+    <string name="report_report_3">Zużycie przez top 3 aplikacje:</string>
     <string name="report_options_0">Tydzień</string>
     <string name="report_options_1">Miesiąc</string>
     <string name="report_options_2">Rok</string>

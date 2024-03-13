@@ -8,9 +8,8 @@
         <item name="colorOnPrimaryContainer">@color/material_dynamic_primary10</item>
 
         <item name="colorSurface">@color/material_dynamic_neutral99</item>
-        <item name="colorSurfaceDim">@color/material_dynamic_neutral_variant99</item>
         <item name="colorOnSurface">@color/material_dynamic_neutral10</item>
-        <item name="colorSurfaceVariant">@color/material_dynamic_neutral_variant90</item>
+        <item name="colorSurfaceVariant">@color/material_dynamic_neutral95</item>
         <item name="colorOnSurfaceVariant">@color/material_dynamic_neutral_variant30</item>
         <item name="colorSurfaceContainerLow">@color/material_dynamic_neutral90</item>
         <item name="android:statusBarColor">@color/status_bar</item>
