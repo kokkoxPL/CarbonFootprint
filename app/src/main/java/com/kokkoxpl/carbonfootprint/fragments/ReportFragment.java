@@ -30,8 +30,11 @@ import com.kokkoxpl.carbonfootprint.data.ReportRange;
 import com.kokkoxpl.carbonfootprint.data.db.AppDatabase;
 import com.kokkoxpl.carbonfootprint.data.db.entities.DataValue;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,7 +55,6 @@ public class ReportFragment extends Fragment {
     private List<DataValue> dataValues;
     private Map<String, Float> dataRecordsCostMap;
     private Map<String, Map<String, Float>> dataReportMap;
-    private ReportRange reportRange;
     private String fromDate;
 
     public ReportFragment() {
@@ -90,27 +92,43 @@ public class ReportFragment extends Fragment {
         tabLayout.selectTab(tabLayout.getTabAt(0));
     }
 
-    private void getRecords(int position) {
+    private ReportRange getReportRange(int position) {
         switch (position) {
-            case 0 -> reportRange = ReportRange.WEEK;
-            case 1 -> reportRange = ReportRange.MONTH;
-            case 2 -> reportRange = ReportRange.YEAR;
-            default -> reportRange = ReportRange.ALL;
+            case 0 -> {
+                return ReportRange.WEEK;
+            }
+            case 1 -> {
+                return ReportRange.MONTH;
+            }
+            case 2 -> {
+                return ReportRange.YEAR;
+            }
+            default -> {
+                return ReportRange.ALL;
+            }
         }
-        LocalDate currentDate = LocalDate.now();
-        String toDate = currentDate.toString();
+    }
 
+    private void setFromDate(ReportRange reportRange) {
+        LocalDate currentDate = LocalDate.now();
         switch (reportRange) {
-            case WEEK -> fromDate = currentDate.minusWeeks(1).plusDays(1).toString();
-            case MONTH -> fromDate = currentDate.minusMonths(1).plusDays(1).toString();
-            case YEAR -> fromDate = currentDate.minusYears(1).plusDays(1).toString();
-            default -> fromDate = LocalDate.ofEpochDay(0).toString();
+            case WEEK -> fromDate = currentDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).toString();
+            case MONTH -> fromDate =  currentDate.with(TemporalAdjusters.firstDayOfMonth()).toString();
+            case YEAR -> fromDate =  currentDate.with(TemporalAdjusters.firstDayOfYear()).toString();
+            default -> fromDate =  LocalDate.ofEpochDay(0).toString();
         }
-        dataRecordsCostMap = appDatabase.dataRecordDao().getRecordsMapByDateRange(fromDate, toDate);
-        dataReportMap = appDatabase.dataRecordDao().getRecordsMapByDateRangeGroup(fromDate, toDate);
+    }
+
+    private void getRecords(int position) {
+        String currentDate = LocalDate.now().toString();
+        ReportRange reportRange = getReportRange(position);
+        setFromDate(reportRange);
+
+        dataRecordsCostMap = appDatabase.dataRecordDao().getRecordsMapByDateRange(fromDate, currentDate);
+        dataReportMap = appDatabase.dataRecordDao().getRecordsMapByDateRangeGroup(fromDate, currentDate);
 
         setUsage();
-        setChartData();
+        setChartData(reportRange);
     }
 
     private void setUsage() {
@@ -120,6 +138,24 @@ public class ReportFragment extends Fragment {
 
     private void setBarChart() {
         barEntries = new ArrayList<>();
+
+        int[] colors = {
+                Color.parseColor("#e60049"), Color.parseColor("#0bb4ff"),
+                Color.parseColor("#ffa300"), Color.parseColor("#b3d4ff"),
+                Color.parseColor("#9b19f5"), Color.parseColor("#00bfa0"),
+                Color.parseColor("#dc0ab4"), Color.parseColor("#e6d800")
+        };
+
+        // WHY DO I HAVE TO DO THIS !!!
+        barEntries.add(new BarEntry(0f, new float[] {0, 0, 0, 0, 0, 0, 0, 0}));
+        BarDataSet dataSet = new BarDataSet(barEntries, "");
+
+        dataSet.setDrawValues(false);
+        dataSet.setColors(colors);
+        dataSet.setStackLabels(dataValues.stream().map(DataValue::name).toArray(String[]::new));
+
+        BarData data = new BarData(dataSet);
+        data.setBarWidth(0.6f);
 
         barChart.getDescription().setEnabled(false);
         barChart.setDoubleTapToZoomEnabled(false);
@@ -133,22 +169,7 @@ public class ReportFragment extends Fragment {
         xAxis.setTextColor(Color.GRAY);
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-    }
 
-    private void setNewBarData() {
-        int[] colors = {
-                Color.parseColor("#e60049"), Color.parseColor("#0bb4ff"),
-                Color.parseColor("#ffa300"), Color.parseColor("#b3d4ff"),
-                Color.parseColor("#9b19f5"), Color.parseColor("#00bfa0"),
-                Color.parseColor("#dc0ab4"), Color.parseColor("#e6d800")
-        };
-
-        BarDataSet dataSet = new BarDataSet(barEntries, "");
-        dataSet.setDrawValues(false);
-        dataSet.setColors(colors);
-        dataSet.setStackLabels(dataValues.stream().map(DataValue::name).toArray(String[]::new));
-
-        BarData data = new BarData(dataSet);
         barChart.setData(data);
     }
 
@@ -184,9 +205,68 @@ public class ReportFragment extends Fragment {
         pieChart.setData(data);
     }
 
-    private void setChartData() {
-        List<PieEntry> pieEntriesTemp = new ArrayList<>();
+    private void setChartData(ReportRange reportRange) {
+        setPieEntries();
+        setBarEntries(reportRange);
+
+        // I HATE BAR CHART
+        ((BarDataSet) barChart.getBarData().getDataSetByIndex(0)).notifyDataSetChanged();
+        barChart.getBarData().notifyDataChanged();
+        barChart.invalidate();
+
+        pieChart.notifyDataSetChanged();
+        pieChart.invalidate();
+
+    }
+
+    private void setBarEntries(ReportRange reportRange) {
         barEntries.clear();
+        List<String> xValues = new ArrayList<>();
+        LocalDate date = LocalDate.parse(fromDate);
+        LocalDate endDate = LocalDate.now();
+        float x = 0;
+
+        switch (reportRange) {
+            case WEEK -> {
+                while (!date.isAfter(endDate)) {
+                    xValues.add(date.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("pl", "PL")));
+
+                    Map<String, Float> apps = dataReportMap.get(date.toString());
+                    if (apps != null) {
+                        float[] values = new float[dataValues.size()];
+
+                        for (int i = 0; i < dataValues.size(); i++) {
+                            values[i] = apps.getOrDefault(dataValues.get(i).name(), 0f);
+                        }
+                        barEntries.add(new BarEntry(x++, values));
+                    } else {
+                        barEntries.add(new BarEntry(x++, new float[] {0, 0, 0, 0, 0, 0, 0, 0}));
+                    }
+                    date = date.plusDays(1);
+                }
+            }
+            case YEAR -> {
+                xValues.add(date.getMonth().getDisplayName(TextStyle.FULL, new Locale("pl", "PL")));
+
+                Map<String, Float> apps = dataReportMap.get(date.toString());
+                if (apps != null) {
+                    float[] values = new float[dataValues.size()];
+
+                    for (int i = 0; i < dataValues.size(); i++) {
+                        values[i] = apps.getOrDefault(dataValues.get(i).name(), 0f);
+                    }
+                    barEntries.add(new BarEntry(x++, values));
+                } else {
+                    barEntries.add(new BarEntry(x++, new float[] {0, 0, 0, 0, 0, 0, 0, 0}));
+                }
+                date = date.plusDays(1);
+            }
+        }
+        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xValues));
+    }
+
+    private void setPieEntries() {
+        List<PieEntry> pieEntriesTemp = new ArrayList<>();
         pieEntries.clear();
 
         for (var dataRecordsCostMap : dataRecordsCostMap.entrySet()) {
@@ -197,42 +277,8 @@ public class ReportFragment extends Fragment {
             }
         }
 
-        setBarEntries();
-
         pieEntriesTemp.sort(Comparator.comparing(PieEntry::getValue));
         Collections.reverse(pieEntriesTemp);
         pieEntries.addAll(pieEntriesTemp.subList(0, Math.min(3, pieEntriesTemp.size())));
-
-        setNewBarData();
-        barChart.notifyDataSetChanged();
-        barChart.invalidate();
-
-        pieChart.notifyDataSetChanged();
-        pieChart.invalidate();
-    }
-
-    private void setBarEntries() {
-        List<String> xValues = new ArrayList<>();
-        LocalDate startDate = LocalDate.parse(fromDate);
-        LocalDate endDate = LocalDate.now();
-        float x = 0;
-
-        for (; startDate.isBefore(endDate); startDate = startDate.plusDays(1)) {
-            xValues.add(startDate.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("pl", "PL")));
-
-            Map<String, Float> apps = dataReportMap.get(startDate.toString());
-            if (apps != null) {
-                float[] values = new float[dataValues.size()];
-
-                for (int i = 0; i < dataValues.size(); i++) {
-                    values[i] = apps.getOrDefault(dataValues.get(i).name(), 0f);
-                }
-
-                barEntries.add(new BarEntry(x++, values));
-            } else {
-                barEntries.add(new BarEntry(x++, 0));
-            }
-        }
-        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xValues));
     }
 }
