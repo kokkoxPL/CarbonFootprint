@@ -62,7 +62,7 @@
             app:layout_constraintTop_toBottomOf="@+id/home_first_row"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:background="?android:attr/listDivider" />
+            android:background="?colorPrimary" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/home_record_list"

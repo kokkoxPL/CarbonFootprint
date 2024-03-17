@@ -65,10 +65,11 @@
                 android:id="@+id/report_report_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/report_report_2"
-                android:textSize="20sp"
+                android:layout_gravity="center"
                 android:layout_marginTop="30dp"
-                android:layout_gravity="center" />
+                android:text="@string/report_report_2"
+                android:textAlignment="center"
+                android:textSize="20sp" />
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/report_bar_chart"
