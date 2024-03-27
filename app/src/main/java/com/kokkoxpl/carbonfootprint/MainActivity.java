@@ -4,14 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.kokkoxpl.carbonfootprint.data.db.AppDatabase;
-import com.kokkoxpl.carbonfootprint.data.db.entities.DataValue;
 import com.kokkoxpl.carbonfootprint.fragments.AboutFragment;
+import com.kokkoxpl.carbonfootprint.fragments.HelpFragment;
 import com.kokkoxpl.carbonfootprint.fragments.HomeFragment;
 import com.kokkoxpl.carbonfootprint.fragments.ReportFragment;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -30,7 +29,10 @@ public class MainActivity extends AppCompatActivity {
             else if (menuItemId ==  R.id.menu_report) {
                 replaceFragment(new ReportFragment());
             }
-             if (menuItemId ==  R.id.menu_about) {
+            else if (menuItemId ==  R.id.menu_help) {
+                replaceFragment(new HelpFragment());
+            }
+            else if (menuItemId ==  R.id.menu_about) {
                 replaceFragment(new AboutFragment());
             }
             return true;

@@ -1,146 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:id="@+id/home_first_row"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="60dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <LinearLayout
-            android:id="@+id/home_first_row"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:id="@+id/home_first_row_data_name"
+            android:text="@string/home_first_row_app"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textColor="?colorOnSurface"
+            android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/home_first_row_data_name"
-                android:text="@string/home_first_row_app"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+        <TextView
+            android:id="@+id/home_first_row_data_cost"
+            android:text="@string/home_first_row_value"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textColor="?colorOnSurface"
+            android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/home_first_row_data_cost"
-                android:text="@string/home_first_row_value"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:textColor="?colorOnSurface"
-                android:textSize="14sp" />
+        <TextView
+            android:id="@+id/home_first_row_data_quantity"
+            android:text="@string/home_first_row_quantity"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="?colorOnSurface"
+            android:textSize="20sp" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/home_first_row_data_quantity"
-                android:text="@string/home_first_row_quantity"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+    </LinearLayout>
 
-        </LinearLayout>
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        app:layout_constraintTop_toBottomOf="@+id/home_first_row"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="?colorPrimary" />
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            app:layout_constraintTop_toBottomOf="@+id/home_first_row"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:background="?colorPrimary" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_record_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        app:layout_constraintBottom_toTopOf="@+id/home_date_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:clipToPadding="false"
+        android:paddingTop="10dp"
+        android:paddingBottom="50dp"
+        tools:listitem="@layout/record_row" >
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/home_record_list"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/divider"
-            app:layout_constraintBottom_toTopOf="@+id/home_date_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:clipToPadding="false"
-            android:paddingTop="10dp"
-            android:paddingBottom="50dp"
-            tools:listitem="@layout/record_row" >
+    </androidx.recyclerview.widget.RecyclerView>
 
-        </androidx.recyclerview.widget.RecyclerView>
+    <LinearLayout
+        android:id="@+id/home_date_layout"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/home_save_records"
+        <ImageButton
+            android:id="@+id/home_previous_day"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_save_button"
-            android:backgroundTint="?colorPrimary"
-            app:tint="?colorOnPrimary"
-            android:clickable="true"
-            android:layout_marginHorizontal="@dimen/record_row_padding_horizontal"
-            android:layout_marginVertical="@dimen/record_row_padding_vertical"
-            app:layout_constraintBottom_toTopOf="@+id/home_date_layout"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_left_button"
+            app:tint="?colorOnSurface" />
 
-        <LinearLayout
-            android:id="@+id/home_date_layout"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:id="@+id/home_current_date"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="?colorOnSurface"
+            tools:text="@tools:sample/date/ddmmyy" />
 
-            <ImageButton
-                android:id="@+id/home_previous_day"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_left_button"
-                app:tint="?colorOnSurface" />
+        <ImageButton
+            android:id="@+id/home_next_day"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_right_button"
+            app:tint="?colorOnSurface" />
 
-            <TextView
-                android:id="@+id/home_current_date"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:textColor="?colorOnSurface"
-                tools:text="@tools:sample/date/ddmmyy" />
+    </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/home_next_day"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_right_button"
-                app:tint="?colorOnSurface" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/home_save_records"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_save_button"
+        android:backgroundTint="?colorPrimary"
+        app:tint="?colorOnPrimary"
+        android:clickable="true"
+        android:layout_marginHorizontal="@dimen/record_row_padding_horizontal"
+        android:layout_marginVertical="@dimen/record_row_padding_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/home_date_layout"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        </LinearLayout>
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/home_get_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/home_get_data_button"
+        android:backgroundTint="?colorPrimary"
+        android:textColor="?colorOnPrimary"
+        android:clickable="true"
+        android:layout_marginHorizontal="@dimen/record_row_padding_horizontal"
+        android:layout_marginVertical="@dimen/record_row_padding_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/home_date_layout"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <CalendarView
-            android:id="@+id/home_calendar"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:background="?colorPrimary"
-            app:layout_constraintBottom_toTopOf="@+id/home_date_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:visibility="gone" />
+    <CalendarView
+        android:id="@+id/home_calendar"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="?colorPrimaryVariant"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

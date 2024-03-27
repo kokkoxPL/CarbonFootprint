@@ -5,7 +5,7 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "data_values")
-public record DataValue(@PrimaryKey(autoGenerate = true) int id, String name, float cost) {
+public record DataValue(@PrimaryKey(autoGenerate = true) int id, String name, String packageName, float cost) {
 
     @Override
     public int id() {

@@ -97,20 +97,12 @@ public class ReportFragment extends Fragment {
     }
 
     private ReportRange getReportRange(int position) {
-        switch (position) {
-            case 0 -> {
-                return ReportRange.WEEK;
-            }
-            case 1 -> {
-                return ReportRange.MONTH;
-            }
-            case 2 -> {
-                return ReportRange.YEAR;
-            }
-            default -> {
-                return ReportRange.ALL;
-            }
-        }
+        return switch (position) {
+            case 0 -> ReportRange.WEEK;
+            case 1 -> ReportRange.MONTH;
+            case 2 -> ReportRange.YEAR;
+            default -> ReportRange.ALL;
+        };
     }
 
     private void setFromDate(ReportRange reportRange) {
