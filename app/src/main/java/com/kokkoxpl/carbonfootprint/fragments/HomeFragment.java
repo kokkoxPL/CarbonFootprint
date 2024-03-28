@@ -33,11 +33,8 @@ import com.kokkoxpl.carbonfootprint.data.db.entities.DataValue;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,7 +107,6 @@ public class HomeFragment extends Fragment {
             changeDate(0);
             v.setVisibility(View.GONE);
         });
-
     }
 
     private void changeDate(int days) {
@@ -128,11 +124,7 @@ public class HomeFragment extends Fragment {
 
         dataRecords.clear();
         for (DataValue dataValue : dataValues) {
-            DataRecord dataRecord = dataRecordsMap.get(dataValue.id());
-            if (dataRecord == null) {
-                dataRecord = new DataRecord(dataValue.id(), 0, newDate);
-            }
-            dataRecords.add(dataRecord);
+            dataRecords.add(dataRecordsMap.getOrDefault(dataValue.id(), new DataRecord(dataValue.id(), 0, newDate)));
         }
     }
 
@@ -140,7 +132,14 @@ public class HomeFragment extends Fragment {
         @SuppressLint("ServiceCast")
         AppOpsManager appOpsManager = (AppOpsManager) getContext().getSystemService(AppCompatActivity.APP_OPS_SERVICE);
 
-        if (appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), getContext().getPackageName()) != AppOpsManager.MODE_ALLOWED) {
+        int mode;
+        if (Build.VERSION.SDK_INT > 28) {
+            mode = appOpsManager.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), getContext().getPackageName());
+        } else {
+            mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), getContext().getPackageName());
+        }
+
+        if (mode != AppOpsManager.MODE_ALLOWED) {
             startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
             return;
         }
