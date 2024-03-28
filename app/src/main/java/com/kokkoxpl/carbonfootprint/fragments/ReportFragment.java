@@ -7,10 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -19,7 +19,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -37,10 +36,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
-import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -150,6 +147,7 @@ public class ReportFragment extends Fragment {
 
         dataSet.setDrawValues(false);
         dataSet.setColors(colors);
+
         dataSet.setStackLabels(dataValues.stream().map(DataValue::name).toArray(String[]::new));
 
         BarData data = new BarData(dataSet);
@@ -158,6 +156,9 @@ public class ReportFragment extends Fragment {
         barChart.getDescription().setEnabled(false);
         barChart.setDoubleTapToZoomEnabled(false);
         barChart.getLegend().setWordWrapEnabled(true);
+        barChart.setFitBars(true);
+        barChart.setPinchZoom(false);
+        barChart.setScaleEnabled(false);
 
         Legend legend = barChart.getLegend();
         legend.setTextSize(14f);
@@ -217,9 +218,11 @@ public class ReportFragment extends Fragment {
         ((BarDataSet) barChart.getBarData().getDataSetByIndex(0)).notifyDataSetChanged();
         barChart.getBarData().notifyDataChanged();
         barChart.notifyDataSetChanged();
+        barChart.animateY(500, Easing.EaseInCubic);
         barChart.invalidate();
 
         pieChart.notifyDataSetChanged();
+        pieChart.animateY(1500, Easing.EaseInOutQuad);
         pieChart.invalidate();
 
     }

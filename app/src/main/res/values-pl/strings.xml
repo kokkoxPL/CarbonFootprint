@@ -10,6 +10,7 @@
     <string name="home_save_records">Zapisz</string>
     <string name="home_first_row_app">Aplikacja</string>
     <string name="home_get_data_button">Pobierz z telefonu</string>
+    <string name="home_toast_save">Zapisano dane</string>
 
     <!-- Report -->
     <string name="report_report_1">Twoje całkowite zużycie:</string>
@@ -24,7 +25,7 @@
 
     <!-- HELP -->
     <string name="help_title">Sposoby na zmniejszenie cyfrowego śladu węglowego</string>
-    <string-array name="help_grid_array">
+    <string-array name="help_array_text">
         <item>Korzystaj z usług cyfrowych na mniejszych urządzeniach</item>
         <item>Czyść skrzynkę mailową</item>
         <item>Zapisuj pliki na komputerze</item>

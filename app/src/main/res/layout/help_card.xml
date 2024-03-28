@@ -1,28 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="?attr/materialCardViewElevatedStyle"
+    android:layout_margin="30dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginVertical="10dp"
-    android:layout_marginHorizontal="10dp"
+    android:layout_height="match_parent"
     app:strokeColor="?colorPrimary"
     app:strokeWidth="1dp"
     app:cardCornerRadius="24dp" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="10dp" >
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp" >
 
         <TextView
             android:id="@+id/help_card_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textSize="14sp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:paddingVertical="30dp"
+            tools:text="@tools:sample/lorem" />
+
+        <ImageView
+            android:id="@+id/help_card_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:layout_below="@+id/help_card_text"
+            tools:src="@tools:sample/backgrounds/scenic"
+            android:paddingBottom="40dp"/>
 
     </RelativeLayout>
 

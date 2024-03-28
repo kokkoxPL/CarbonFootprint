@@ -18,11 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Process;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.kokkoxpl.carbonfootprint.R;
@@ -87,7 +87,10 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
-        save.setOnClickListener(v -> appDatabase.dataRecordDao().updateRecords(dataRecords));
+        save.setOnClickListener(v -> {
+            appDatabase.dataRecordDao().updateRecords(dataRecords);
+            Toast.makeText(getContext(), getResources().getString(R.string.home_toast_save), Toast.LENGTH_SHORT).show();
+        });
 
         prev.setOnClickListener(v -> changeDate(-1));
 
