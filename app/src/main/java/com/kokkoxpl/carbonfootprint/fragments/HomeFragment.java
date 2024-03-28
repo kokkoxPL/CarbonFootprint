@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Process;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.ImageButton;
@@ -150,7 +151,7 @@ public class HomeFragment extends Fragment {
         UsageStatsManager usageStatsManager = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
         Map<String, UsageStats> usageStatsMap = usageStatsManager.queryAndAggregateUsageStats(
                 currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli(),
-                System.currentTimeMillis());
+                currentDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
 
         for (DataValue dataValue : dataValues) {
             var app = usageStatsMap.get(dataValue.packageName());
