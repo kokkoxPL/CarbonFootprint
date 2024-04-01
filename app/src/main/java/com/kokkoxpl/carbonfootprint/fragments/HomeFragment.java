@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Process;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.ImageButton;
@@ -158,8 +157,8 @@ public class HomeFragment extends Fragment {
             if (app != null) {
                 DataRecord dataRecord = dataRecords.stream().filter(dataRecordS -> dataRecordS.getIdOfData() == dataValue.id()).findFirst().get();
                 dataRecord.setQuantity((int) (app.getTotalTimeInForeground() / 60000));
+                recordListAdapter.notifyItemChanged(dataRecord.getIdOfData() - 1);
             }
         }
-        recordListAdapter.setRecords(dataRecords);
     }
 }

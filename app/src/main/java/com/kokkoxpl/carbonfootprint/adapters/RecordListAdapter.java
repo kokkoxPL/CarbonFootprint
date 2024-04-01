@@ -49,8 +49,8 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
         viewHolder.bind(dataValues.get(position), dataRecords.get(position), context);
     }
 
-    public void setRecords(@NonNull List<DataRecord> records) {
-        this.dataRecords = records;
+    public void setRecords(@NonNull List<DataRecord> dataRecords) {
+        this.dataRecords = dataRecords;
         notifyItemRangeChanged(0, getItemCount());
     }
 

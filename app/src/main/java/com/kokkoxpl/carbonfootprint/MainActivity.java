@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
-        bottomNavigationView.setSelectedItemId(R.id.menu_about);
+        bottomNavigationView.setSelectedItemId(R.id.menu_home);
     }
 
     private void replaceFragment (Fragment fragment){
