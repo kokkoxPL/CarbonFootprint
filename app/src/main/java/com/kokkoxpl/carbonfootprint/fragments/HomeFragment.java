@@ -1,6 +1,5 @@
 package com.kokkoxpl.carbonfootprint.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.AppOpsManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
@@ -18,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Process;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.ImageButton;
@@ -132,7 +132,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void getDataFromPhone() {
-        @SuppressLint("ServiceCast")
         AppOpsManager appOpsManager = (AppOpsManager) getContext().getSystemService(AppCompatActivity.APP_OPS_SERVICE);
 
         int mode;
