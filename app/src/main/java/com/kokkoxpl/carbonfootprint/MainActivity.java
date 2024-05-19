@@ -22,16 +22,16 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int menuItemId =  item.getItemId();
 
-            if (menuItemId ==  R.id.menu_home) {
+            if (menuItemId == R.id.menu_home) {
                 replaceFragment(new HomeFragment());
             }
-            else if (menuItemId ==  R.id.menu_report) {
+            else if (menuItemId == R.id.menu_report) {
                 replaceFragment(new ReportFragment());
             }
-            else if (menuItemId ==  R.id.menu_help) {
+            else if (menuItemId == R.id.menu_help) {
                 replaceFragment(new HelpFragment());
             }
-            else if (menuItemId ==  R.id.menu_about) {
+            else if (menuItemId == R.id.menu_about) {
                 replaceFragment(new AboutFragment());
             }
             return true;

@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="?attr/materialCardViewElevatedStyle"
-    android:layout_margin="30dp"
+    android:layout_margin="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:strokeColor="?colorPrimary"
     app:strokeWidth="1dp"
-    app:cardCornerRadius="24dp" >
+    app:cardCornerRadius="12dp" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="20dp" >
+        android:paddingHorizontal="24dp" >
 
         <TextView
             android:id="@+id/help_card_text"
@@ -33,7 +33,7 @@
             android:adjustViewBounds="true"
             android:layout_below="@+id/help_card_text"
             tools:src="@tools:sample/backgrounds/scenic"
-            android:paddingBottom="40dp"/>
+            android:paddingBottom="20dp"/>
 
     </RelativeLayout>
 

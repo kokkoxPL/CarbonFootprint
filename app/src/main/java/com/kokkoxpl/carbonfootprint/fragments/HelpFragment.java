@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.View;
@@ -34,6 +36,22 @@ public class HelpFragment extends Fragment {
         viewPager2.setAdapter(helpListAdapter);
         viewPager2.setPageTransformer(new LoopingViewPagerTransformer());
         viewPager2.setCurrentItem(1, false);
+
+//        RecyclerView recyclerView = (RecyclerView) viewPager2.getChildAt(0);
+//        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+//        int itemCount = viewPager2.getAdapter().getItemCount();
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//
+//                if (linearLayoutManager.findFirstVisibleItemPosition() == (itemCount - 1) && dx > 0) {
+//                    recyclerView.scrollToPosition(1);
+//                } else if (linearLayoutManager.findLastVisibleItemPosition() == 0 && dx < 0) {
+//                    recyclerView.scrollToPosition(itemCount - 2);
+//                }
+//            }
+//        });
 
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override

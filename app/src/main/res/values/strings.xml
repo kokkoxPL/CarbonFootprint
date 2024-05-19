@@ -36,19 +36,19 @@
     </string>
     <string name="about_about_2" translatable="false">Nasz zespół:</string>
     <string-array name="about_list" translatable="false">
-<!--        <item>Karolina Łakomy</item>-->
+        <item>Karolina Łakomy</item>
         <item>Adrian Gamracy</item>
         <item>Tobiasz Liszka</item>
         <item>Mateusz Skupień</item>
-<!--        <item>Aleksandra Kubas</item>-->
-<!--        <item>Bartosz Popek</item>-->
-<!--        <item>Fabian Bar</item>-->
-<!--        <item>Gabriel Malach</item>-->
-<!--        <item>Jakub Mazurkiewicz</item>-->
-<!--        <item>Michał Dubiel</item>-->
-<!--        <item>Patryk Balawender</item>-->
-<!--        <item>Polina Horodovikova</item>-->
-<!--        <item>Weronika Dębicka</item>-->
+        <item>Aleksandra Kubas</item>
+        <item>Bartosz Popek</item>
+        <item>Fabian Bar</item>
+        <item>Gabriel Malach</item>
+        <item>Jakub Mazurkiewicz</item>
+        <item>Michał Dubiel</item>
+        <item>Patryk Balawender</item>
+        <item>Polina Horodovikova</item>
+        <item>Weronika Dębicka</item>
     </string-array>
     <string name="about_about_3" translatable="false">
         Kampania Cyfrowy Uśmiech powstaje dzięki finansowaniu w Programie „Akcelerator Pro”
