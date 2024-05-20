@@ -7,20 +7,32 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.View;
 
 import com.kokkoxpl.carbonfootprint.R;
 import com.kokkoxpl.carbonfootprint.adapters.HelpListAdapter;
+import com.kokkoxpl.carbonfootprint.data.db.AppDatabase;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class HelpFragment extends Fragment {
-    private List<String> list;
+    private AppDatabase appDatabase;
+    private List<String> textList;
+    private List<String> imageList;
     private ScheduledFuture<?> future;
 
     public HelpFragment() {
@@ -33,12 +45,32 @@ public class HelpFragment extends Fragment {
 
         ViewPager2 viewPager2 = view.findViewById(R.id.help_view_pager2);
 
-        list = Arrays.asList(getResources().getStringArray(R.array.help_array_text));
-        HelpListAdapter helpListAdapter = new HelpListAdapter(list, getContext());
+        appDatabase = AppDatabase.newInstance(getContext());
+
+        textList = new ArrayList<>();
+        imageList = new ArrayList<>();
+        textList.addAll(Arrays.asList(getResources().getStringArray(R.array.help_array_text)));
+
+        for (int i = 1; i <= textList.size(); i++) {
+            imageList.add(String.format("image_%s", i));
+        }
+
+        String mostUsedApp = appDatabase.dataRecordDao().getRecordsMostUsedApp(LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).toString(), LocalDate.now().toString());
+        if (mostUsedApp != null) {
+            Collections.reverse(textList);
+            textList.add(String.format("%s %s", getString(R.string.help_app_tip), mostUsedApp));
+            Collections.reverse(textList);
+
+            Collections.reverse(imageList);
+            imageList.add(String.format("logo_%s", mostUsedApp.toLowerCase()));
+            Collections.reverse(imageList);
+        }
+
+        HelpListAdapter helpListAdapter = new HelpListAdapter(textList, imageList, getContext());
 
         viewPager2.setAdapter(helpListAdapter);
         viewPager2.setPageTransformer(new LoopingViewPagerTransformer());
-        viewPager2.setCurrentItem(0, false);
+        viewPager2.setCurrentItem(1, false);
 
         ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
         Runnable runnable = () -> viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1, true);
@@ -53,10 +85,10 @@ public class HelpFragment extends Fragment {
                 future = scheduleNewFuture(service, runnable);
 
                 if (state == ViewPager2.SCROLL_STATE_IDLE) {
-                    if (viewPager2.getCurrentItem() == list.size() + 1) {
+                    if (viewPager2.getCurrentItem() == textList.size() + 1) {
                         viewPager2.setCurrentItem(1, false);
                     } else if (viewPager2.getCurrentItem() == 0) {
-                        viewPager2.setCurrentItem(list.size(), false);
+                        viewPager2.setCurrentItem(textList.size(), false);
                     }
                 }
             }
@@ -64,7 +96,7 @@ public class HelpFragment extends Fragment {
     }
 
     private ScheduledFuture<?> scheduleNewFuture(ScheduledExecutorService service, Runnable runnable) {
-        return service.scheduleAtFixedRate(runnable, 5, 5, TimeUnit.SECONDS);
+        return service.scheduleAtFixedRate(runnable, 10, 8, TimeUnit.SECONDS);
     }
 
     private static class LoopingViewPagerTransformer implements ViewPager2.PageTransformer {

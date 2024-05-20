@@ -1,6 +1,7 @@
 package com.kokkoxpl.carbonfootprint.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HelpListAdapter extends RecyclerView.Adapter<HelpListAdapter.ItemViewHolder> {
-    private final List<String> list;
+    private final List<String> textList;
+    private final List<String> imageList;
     private final Context context;
 
-    public HelpListAdapter(List<String> list, Context context) {
-        this.list = list;
+    public HelpListAdapter(List<String> textList, List<String> imageList, Context context) {
+        this.textList = textList;
+        this.imageList = imageList;
         this.context = context;
     }
 
-    private List<String> newList() {
+    private List<String> newList(List<String> list) {
         List<String> newList = new ArrayList<>();
         newList.add(list.get(list.size() - 1));
         newList.addAll(list);
@@ -40,18 +43,17 @@ public class HelpListAdapter extends RecyclerView.Adapter<HelpListAdapter.ItemVi
 
     @Override
     public void onBindViewHolder(@NonNull HelpListAdapter.ItemViewHolder holder, final int position) {
-        int pos = switch (position) {
-            case 8 -> 1;
-            case 0 -> 7;
-            default -> position;
-        };
-        holder.getTextView().setText(newList().get(position));
-        holder.getImageView().setImageResource(context.getResources().getIdentifier(String.format("@drawable/image_%s", pos), null, context.getPackageName()));
+        int pos = position;
+        if (pos == textList.size() + 1) pos = 1;
+        else if (pos == 0) pos = textList.size();
+
+        holder.getTextView().setText(newList(textList).get(position));
+        holder.getImageView().setImageResource(context.getResources().getIdentifier(String.format("@drawable/%s", newList(imageList).get(pos)), null, context.getPackageName()));
     }
 
     @Override
     public int getItemCount() {
-        return newList().size();
+        return textList.size() + 2;
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {

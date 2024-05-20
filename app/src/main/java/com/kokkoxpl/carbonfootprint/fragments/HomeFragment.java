@@ -85,6 +85,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(recordListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(dataValues.size());
 
         save.setOnClickListener(v -> {
             appDatabase.dataRecordDao().updateRecords(dataRecords);

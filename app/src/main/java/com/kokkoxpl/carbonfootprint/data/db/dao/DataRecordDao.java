@@ -41,4 +41,7 @@ public interface DataRecordDao {
     @Query("SELECT data_records.date AS dataRecordDate, data_values.name AS dataValueName, (data_values.cost * SUM(data_records.quantity)) AS dataRecordSum " +
             "FROM data_values JOIN data_records ON data_values.id = data_records.idOfData WHERE date BETWEEN :fromDate AND :toDate GROUP BY data_records.idOfData, data_records.date ORDER BY data_records.date")
     Map<@MapColumn(columnName = "dataRecordDate") String, Map<@MapColumn(columnName = "dataValueName") String, @MapColumn(columnName = "dataRecordSum") Float>> getRecordsMapByDateRangeGroup(String fromDate, String toDate);
+
+    @Query("SELECT data_values.name FROM data_values JOIN data_records ON data_values.id = data_records.idOfData WHERE date BETWEEN :fromDate AND :toDate GROUP BY data_records.idOfData ORDER BY data_values.cost * SUM(data_records.quantity) DESC LIMIT 1")
+    String getRecordsMostUsedApp(String fromDate, String toDate);
 }

@@ -56,14 +56,22 @@
     </string>
 
     <!-- HELP -->
-    <string name="help_title">Sposoby na zmniejszenie cyfrowego śladu węglowego</string>
-    <string-array name="help_array_text">
-        <item>Korzystaj z usług cyfrowych na mniejszych urządzeniach</item>
+    <string translatable="false" name="help_title">Kodeks Dobrych Praktyk Ograniczania Cyfrowego Śladu Węglowego</string>
+    <string-array translatable="false" name="help_array_text">
+        <item>Ogranicz czas, który spędzasz na scrollowaniu</item>
         <item>Czyść skrzynkę mailową</item>
+        <item>Odłącz z prądu wszystkie nieużywane ładowarki</item>
         <item>Zapisuj pliki na komputerze</item>
-        <item>Kopiuj zawartość komputera na dysk zewnętrzny</item>
+        <item>Ogranicz wideokonferencje</item>
+        <item>Nie zostawiaj urządzeń w trybie czuwania</item>
+        <item>Przechowuj pliki czy zdjęci na dyskach, a nie w chmurach</item>
+        <item>Dbaj o sprzęt elektroniczny</item>
         <item>Wymieniaj sprzęty elektroniczne tak rzadko, jak to możliwe</item>
+        <item>Korzystaj z usług cyfrowych na mniejszych urządzeniach</item>
         <item>Pobieraj ulubione utwory z serwisów streamingowych na telefon lub komputer</item>
+        <item>Upewnijmy się, że sprzęt, który kupujesz poddawany jest recyklingowi lub ponownemu wykorzystaniu</item>
         <item>Nie zgadzaj się na ciasteczka – poza ochroną prywatności ograniczysz przesył danych</item>
+        <item>Pokazuj swoim dostawcom, że ich ślad węglowy ma dla Ciebie znaczenie</item>
     </string-array>
+    <string translatable="false" name="help_app_tip">Spróbuj ograniczyć użytkowanie aplikacji</string>
 </resources>
