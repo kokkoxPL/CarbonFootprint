@@ -5,8 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.View;
@@ -16,9 +14,14 @@ import com.kokkoxpl.carbonfootprint.adapters.HelpListAdapter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class HelpFragment extends Fragment {
     private List<String> list;
+    private ScheduledFuture<?> future;
 
     public HelpFragment() {
         super(R.layout.fragment_help);
@@ -35,28 +38,19 @@ public class HelpFragment extends Fragment {
 
         viewPager2.setAdapter(helpListAdapter);
         viewPager2.setPageTransformer(new LoopingViewPagerTransformer());
-        viewPager2.setCurrentItem(1, false);
+        viewPager2.setCurrentItem(0, false);
 
-//        RecyclerView recyclerView = (RecyclerView) viewPager2.getChildAt(0);
-//        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-//        int itemCount = viewPager2.getAdapter().getItemCount();
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//
-//                if (linearLayoutManager.findFirstVisibleItemPosition() == (itemCount - 1) && dx > 0) {
-//                    recyclerView.scrollToPosition(1);
-//                } else if (linearLayoutManager.findLastVisibleItemPosition() == 0 && dx < 0) {
-//                    recyclerView.scrollToPosition(itemCount - 2);
-//                }
-//            }
-//        });
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
+        Runnable runnable = () -> viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1, true);
+        future = scheduleNewFuture(service, runnable);
 
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
+
+                future.cancel(true);
+                future = scheduleNewFuture(service, runnable);
 
                 if (state == ViewPager2.SCROLL_STATE_IDLE) {
                     if (viewPager2.getCurrentItem() == list.size() + 1) {
@@ -69,7 +63,11 @@ public class HelpFragment extends Fragment {
         });
     }
 
-    public static class LoopingViewPagerTransformer implements ViewPager2.PageTransformer {
+    private ScheduledFuture<?> scheduleNewFuture(ScheduledExecutorService service, Runnable runnable) {
+        return service.scheduleAtFixedRate(runnable, 5, 5, TimeUnit.SECONDS);
+    }
+
+    private static class LoopingViewPagerTransformer implements ViewPager2.PageTransformer {
         @Override
         public void transformPage(@NonNull View page, float position) {
             if (position <= -1.0f || position >= 1.0f) {

@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Process;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.ImageButton;
