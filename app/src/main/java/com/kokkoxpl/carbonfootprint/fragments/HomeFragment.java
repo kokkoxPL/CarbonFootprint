@@ -159,5 +159,6 @@ public class HomeFragment extends Fragment {
                 recordListAdapter.notifyItemChanged(dataRecord.getIdOfData() - 1);
             }
         }
+        Toast.makeText(this.getContext(), R.string.home_toast_get_phone, Toast.LENGTH_SHORT).show();
     }
 }
