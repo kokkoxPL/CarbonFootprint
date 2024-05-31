@@ -238,7 +238,7 @@ public class ReportFragment extends Fragment {
                 textView.setText(R.string.report_report_2);
 
                 final int TIME = 7;
-
+                // Hello World
                 for (int i = 0; i < TIME; i++) {
                     xValues.add(date.getDayOfWeek().getDisplayName(TextStyle.SHORT, new Locale("pl", "PL")));
 

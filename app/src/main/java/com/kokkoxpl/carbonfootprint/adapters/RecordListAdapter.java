@@ -22,13 +22,18 @@ import com.kokkoxpl.carbonfootprint.R;
 import com.kokkoxpl.carbonfootprint.data.db.entities.DataRecord;
 import com.kokkoxpl.carbonfootprint.data.db.entities.DataValue;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 
 public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.RecordViewHolder> {
     private final List<DataValue> dataValues;
     private List<DataRecord> dataRecords;
+    private final Map<String, Integer> logoMap;
     private final Context context;
 
 
@@ -36,6 +41,18 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
         this.dataValues = dataValues;
         this.dataRecords = dataRecords;
         this.context = context;
+        this.logoMap = new HashMap<>();
+        R.drawable.class.getDeclaredFields();
+        Field[] drawables = R.drawable.class.getFields();
+        for (Field field : drawables) {
+            final String fieldName = field.getName();
+            if (fieldName.startsWith("logo_")) {
+                try {
+                    logoMap.put(fieldName, field.getInt(null));
+                } catch (Exception ignored) {
+                }
+            }
+        }
     }
 
     @NonNull
@@ -46,7 +63,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
 
     @Override
     public void onBindViewHolder(@NonNull RecordViewHolder viewHolder, final int position) {
-        viewHolder.bind(dataValues.get(position), dataRecords.get(position), context);
+        viewHolder.bind(dataValues.get(position), dataRecords.get(position), context, logoMap);
     }
 
     public void setRecords(@NonNull List<DataRecord> dataRecords) {
@@ -79,27 +96,27 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
             quantityText = view.findViewById(R.id.editTextUsername);
         }
 
-        public void bind(final DataValue dataValue, DataRecord dataRecord, Context context) {
+        public void bind(final DataValue dataValue, DataRecord dataRecord, Context context, Map<String, Integer> logoMap) {
             final int CHANGE_VALUE = 15;
 
             name.setText(dataValue.name());
-            value.setText(String.format(Locale.getDefault(),"%.2f", dataValue.cost()));
-            logo.setImageResource(context.getResources().getIdentifier(String.format("@drawable/logo_%s", dataValue.name().toLowerCase()), null, context.getPackageName()));
+            value.setText(String.format(Locale.getDefault(), "%.2f", dataValue.cost()));
 
-            plusButton.setOnClickListener(v -> {
-                setQuantityEditText(CHANGE_VALUE);
-            });
+            Integer resId = logoMap.get(String.format("logo_%s", dataValue.name().toLowerCase()));
+            logo.setImageResource(Objects.requireNonNullElseGet(resId, () -> R.drawable.placeholder));
 
-            minusButton.setOnClickListener(v -> {
-                setQuantityEditText(-CHANGE_VALUE);
-            });
+            plusButton.setOnClickListener(v -> setQuantityEditText(CHANGE_VALUE));
+
+            minusButton.setOnClickListener(v -> setQuantityEditText(-CHANGE_VALUE));
 
             quantityText.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
 
                 @Override
                 public void afterTextChanged(Editable s) {

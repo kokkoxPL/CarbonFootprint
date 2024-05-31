@@ -7,14 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Process;
 import android.provider.Settings;
 import android.view.View;
@@ -22,6 +14,13 @@ import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.kokkoxpl.carbonfootprint.R;
@@ -101,7 +100,7 @@ public class HomeFragment extends Fragment {
         dateTextView.setOnClickListener(v -> {
             switch (calendarView.getVisibility()) {
                 case View.GONE -> calendarView.setVisibility(View.VISIBLE);
-                case View.VISIBLE -> calendarView.setVisibility(View.GONE);
+                case View.VISIBLE, View.INVISIBLE -> calendarView.setVisibility(View.GONE);
             }
         });
 
@@ -154,7 +153,9 @@ public class HomeFragment extends Fragment {
         for (DataValue dataValue : dataValues) {
             var app = usageStatsMap.get(dataValue.packageName());
             if (app != null) {
-                DataRecord dataRecord = dataRecords.stream().filter(dataRecordS -> dataRecordS.getIdOfData() == dataValue.id()).findFirst().get();
+                DataRecord dataRecord = dataRecords.stream().filter(dataRecordS -> dataRecordS.getIdOfData() == dataValue.id())
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalStateException("DataRecord not found for id: " + dataValue.id()));
                 dataRecord.setQuantity((int) (app.getTotalTimeInForeground() / 60000));
                 recordListAdapter.notifyItemChanged(dataRecord.getIdOfData() - 1);
             }

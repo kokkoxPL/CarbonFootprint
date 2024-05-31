@@ -1,14 +1,12 @@
 package com.kokkoxpl.carbonfootprint.fragments;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
-
-import android.util.Log;
-import android.view.View;
 
 import com.kokkoxpl.carbonfootprint.R;
 import com.kokkoxpl.carbonfootprint.adapters.HelpListAdapter;
@@ -19,11 +17,7 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -57,16 +51,11 @@ public class HelpFragment extends Fragment {
 
         String mostUsedApp = appDatabase.dataRecordDao().getRecordsMostUsedApp(LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).toString(), LocalDate.now().toString());
         if (mostUsedApp != null) {
-            Collections.reverse(textList);
-            textList.add(String.format("%s %s", getString(R.string.help_app_tip), mostUsedApp));
-            Collections.reverse(textList);
-
-            Collections.reverse(imageList);
-            imageList.add(String.format("logo_%s", mostUsedApp.toLowerCase()));
-            Collections.reverse(imageList);
+            textList.add(0, String.format("%s %s", getString(R.string.help_app_tip), mostUsedApp));
+            imageList.add(0, String.format("logo_%s", mostUsedApp.toLowerCase()));
         }
 
-        HelpListAdapter helpListAdapter = new HelpListAdapter(textList, imageList, getContext());
+        HelpListAdapter helpListAdapter = new HelpListAdapter(textList, imageList);
 
         viewPager2.setAdapter(helpListAdapter);
         viewPager2.setPageTransformer(new LoopingViewPagerTransformer());
@@ -96,7 +85,7 @@ public class HelpFragment extends Fragment {
     }
 
     private ScheduledFuture<?> scheduleNewFuture(ScheduledExecutorService service, Runnable runnable) {
-        return service.scheduleAtFixedRate(runnable, 10, 8, TimeUnit.SECONDS);
+        return service.scheduleWithFixedDelay(runnable, 10, 8, TimeUnit.SECONDS);
     }
 
     private static class LoopingViewPagerTransformer implements ViewPager2.PageTransformer {

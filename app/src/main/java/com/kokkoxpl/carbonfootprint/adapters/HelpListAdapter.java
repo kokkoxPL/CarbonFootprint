@@ -1,7 +1,5 @@
 package com.kokkoxpl.carbonfootprint.adapters;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,18 +11,33 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kokkoxpl.carbonfootprint.R;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class HelpListAdapter extends RecyclerView.Adapter<HelpListAdapter.ItemViewHolder> {
     private final List<String> textList;
     private final List<String> imageList;
-    private final Context context;
+    private final Map<String, Integer> drawableMap;
 
-    public HelpListAdapter(List<String> textList, List<String> imageList, Context context) {
+    public HelpListAdapter(List<String> textList, List<String> imageList) {
         this.textList = textList;
         this.imageList = imageList;
-        this.context = context;
+        this.drawableMap = new HashMap<>();
+
+        Field[] drawables = R.drawable.class.getFields();
+        for (Field field : drawables) {
+            final String fieldName = field.getName();
+            if (fieldName.startsWith("image_") || fieldName.startsWith("logo_")) {
+                try {
+                    drawableMap.put(fieldName, field.getInt(null));
+                } catch (Exception ignored) {
+                }
+            }
+        }
     }
 
     private List<String> newList(List<String> list) {
@@ -48,7 +61,9 @@ public class HelpListAdapter extends RecyclerView.Adapter<HelpListAdapter.ItemVi
         else if (pos == 0) pos = textList.size();
 
         holder.getTextView().setText(newList(textList).get(position));
-        holder.getImageView().setImageResource(context.getResources().getIdentifier(String.format("@drawable/%s", newList(imageList).get(pos)), null, context.getPackageName()));
+
+        Integer resId = drawableMap.get(newList(imageList).get(pos));
+        holder.getImageView().setImageResource(Objects.requireNonNullElseGet(resId, () -> R.drawable.placeholder));
     }
 
     @Override
@@ -69,6 +84,7 @@ public class HelpListAdapter extends RecyclerView.Adapter<HelpListAdapter.ItemVi
         public TextView getTextView() {
             return textView;
         }
+
         public ImageView getImageView() {
             return imageView;
         }
